@@ -76,7 +76,7 @@
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script>
-    if ($.cookie('lang') == null) {
+    if ($.cookie('lang') == null || $.cookie('lang')=="") {
         $("#showLang").val("chinese")
         var lang = "chinese";
     } else {

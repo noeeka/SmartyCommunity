@@ -131,7 +131,7 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="setting.html" data-lang="string_lang3"></a></li>
+                        <li class="active"><a href="project.html" data-lang="string_lang3"></a></li>
 
                     </ul>
                 </li>
@@ -173,7 +173,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1 data-lang="string_lang10">
+            <h1 data-lang="string_lang18">
                 Dashboard
                 <small>Control panel</small>
             </h1>
@@ -187,134 +187,39 @@
         <section class="content">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-aqua">
-                        <div class="inner">
-                            <h3>150</h3>
-
-                            <p data-lang="string_lang12"></p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-home"></i>
-                        </div>
-                    </div>
-                </div>
                 <!-- ./col -->
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h3>53</h3>
-
-                            <p data-lang="string_lang13">Bounce Rate</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-android-contacts"></i>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-yellow">
-                        <div class="inner">
-                            <h3>44</h3>
-
-                            <p data-lang="string_lang14">User Registrations</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-ipod"></i>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-red">
-                        <div class="inner">
-                            <h3>65</h3>
-
-                            <p data-lang="string_lang15">Unique Visitors</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-laptop"></i>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- ./col -->
-            </div>
-            <!-- /.row -->
-            <!-- Main row -->
-            <div class="row">
-                <!-- Left col -->
-                <!-- /.Left col -->
-                <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-12 connectedSortable">
-                    <!-- Map box -->
-                    <div class="box box-solid bg-light-blue-gradient">
-                        <div class="box-header">
-                            <!-- tools box -->
-                            <div class="pull-right box-tools">
-                                <button type="button" class="btn btn-primary btn-sm daterange pull-right"
-                                        data-toggle="tooltip"
-                                        title="Date range">
-                                    <i class="fa fa-calendar"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse"
-                                        data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
-                                    <i class="fa fa-minus"></i></button>
-                            </div>
-                            <!-- /. tools -->
-
-                            <i class="fa fa-map-marker"></i>
-
-                            <h3 class="box-title" data-lang="string_lang16">
-                                Visitors
-                            </h3>
-                        </div>
-                        <div class="box-body">
-                            <div id="world-map" style="height: 250px; width: 100%;"></div>
-                        </div>
-                        <!-- /.box-body-->
-
-                    </div>
-                    <div class="box box-solid bg-green-gradient">
-                        <div class="box-header">
-                            <i class="fa fa-calendar"></i>
-
-                            <h3 class="box-title" data-lang="string_lang17">Calendar</h3>
-                            <!-- tools box -->
-                            <div class="pull-right box-tools">
-                                <!-- button with a dropdown -->
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                            data-toggle="dropdown">
-                                        <i class="fa fa-bars"></i></button>
-
-                                </div>
-                                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i
-                                        class="fa fa-times"></i>
-                                </button>
-                            </div>
-                            <!-- /. tools -->
-                        </div>
+                <div class="col-xs-12">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
                         <!-- /.box-header -->
-                        <div class="box-body no-padding">
-                            <!--The calendar -->
-                            <div id="calendar" style="width: 100%"></div>
-                        </div>
-                        <!-- /.box-body -->
+                        <!-- form start -->
+                        <form role="form">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="projectname" data-lang="string_lang21"></label>
+                                    <input type="text" class="form-control" id="projectname">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address" data-lang="string_lang19">Email address</label>
+                                    <input type="text" class="form-control" id="address">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tel" data-lang="string_lang20">Password</label>
+                                    <input type="text" class="form-control" id="tel">
+                                </div>
 
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary" data-lang="string_lang100" id="submit">Submit</button>
+                            </div>
+                        </form>
                     </div>
-                </section>
-                <!-- right col -->
+                    <!-- /.box -->
+                </div>
             </div>
+
             <!-- /.row (main row) -->
 
         </section>
@@ -330,6 +235,27 @@
     </footer>
     <div class="control-sidebar-bg"></div>
 </div>
+
+
+<div class="modal modal-warning fade" id="modal-warning">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-dismiss="modal" data-lang="string_lang101">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
@@ -379,16 +305,53 @@
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
             success: function (data) {
                 if (data.state == 1) {
-                    $(".logo-lg").html(data.ret.project_name);
-                    $(".hidden-xs").html(data.ret.username);
-
+                    $("#projectname").val(data.ret.project_name);
+                    $("#address").val(data.ret.address);
+                    $("#tel").val(data.ret.tel);
                 } else {
                     alert("API error");
                 }
             },
             dataType: "json"
         })
+$("#submit").click(function () {
+    var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
+    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+    var tel=$("#tel").val();
+    if(!isMobile.test(tel) && !isPhone.test(tel)){
+        $(".modal-body").html("<h2>"+$.i18n.map['string_error_tel']+"</h2>");
+        $('body').append('<div class="modal-backdrop fade in"></div>');
+        $("#modal-warning").addClass("in");
+        $("#modal-warning").show();
+        return false;
+    }
 
+    $.ajax({
+        type: "POST",
+        url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+        data: {project_name: $("#projectname").val(), address: $("#address").val(), tel: tel},
+        success: function (data) {
+            if (data.state == 1) {
+                location.reload();
+            } else {
+                $(".modal-body").html("<h2>API Error</h2>");
+                $('body').append('<div class="modal-backdrop fade in"></div>');
+                $("#modal-warning").addClass("in");
+                $("#modal-warning").show();
+                return false;
+            }
+        },
+        dataType: "json"
+    })
+
+})
+
+        $("[data-dismiss|='modal']").click(function () {
+            $("#modal-warning").removeClass("in");
+            $("#modal-warning").hide();
+            $(".modal-backdrop").remove();
+
+        })
 
     })
 
