@@ -41,4 +41,8 @@ class Location extends CI_Controller
     }
 
     //获取栋列表
+    public function getBuildings(){
+        $result=$this->db->get('building')->result();
+        echo json_encode(array("state"=>1,"ret"=>$result));
+    }
 }
