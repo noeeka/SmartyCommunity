@@ -20,29 +20,46 @@ class Location extends CI_Controller
 
         $this->db->select_max('building');
         $result = $this->db->get('building')->row();
-        if(empty($result->building)){
-            echo json_encode(array("state" => 1, "ret" =>1));
-        }else{
-            echo json_encode(array("state" => 1, "ret" =>($result->building+1)));
+        if (empty($result->building)) {
+            echo json_encode(array("state" => 1, "ret" => 1));
+        } else {
+            echo json_encode(array("state" => 1, "ret" => ($result->building + 1)));
         }
     }
 
     //添加楼栋号
-    public function addBuilding(){
-        $building=$this->input->post("building");
+    public function addBuilding()
+    {
+        $building = $this->input->post("building");
         $data = array(
             'building' => $building
         );
 
-        $result=$this->db->insert('building', $data);
-        if($result){
-            echo json_encode(array("state" => 1, "ret" =>1));
+        $result = $this->db->insert('building', $data);
+        if ($result) {
+            echo json_encode(array("state" => 1, "ret" => 1));
         }
     }
 
     //获取栋列表
-    public function getBuildings(){
-        $result=$this->db->get('building')->result();
-        echo json_encode(array("state"=>1,"ret"=>$result));
+    public function getBuildings()
+    {
+        $result = $this->db->get('building')->result();
+        echo json_encode(array("state" => 1, "ret" => $result));
+    }
+
+    //编辑楼栋信息、
+    public function editBuilding()
+    {
+        $id = $this->input->post('id');
+        $building = $this->input->post('building');
+
+        $data = array(
+            'id' => $id,
+            'building' => $building
+        );
+        $this->db->where('id', $id);
+        $this->db->update('building', $data);
+        echo json_encode(array("state" => 1, "ret" => "success"));
     }
 }

@@ -175,8 +175,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
-                    data-lang="string_lang22">
-                Launch Default Modal
+                    data-lang="string_lang22" id="addBuildingBtn">
             </button>
 
             <ol class="breadcrumb">
@@ -208,7 +207,8 @@
                         </div>
                         <!-- /.box-body -->
                     </div>
-                </div>s
+                </div>
+                s
             </div>
             <!-- /.row -->
             <!-- Main row -->
@@ -239,6 +239,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" id="building">
+                    <input type="hidden" id="buildingId">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -295,27 +296,33 @@
 <script>
 
     $(function () {
-        $.ajax({
-            type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getBuilding",
-            success: function (data) {
-                if (data.state == 1) {
-                    $("#building").val(data.ret);
-                } else {
-                    alert("API error");
-                }
-            },
-            dataType: "json"
+        $("#addBuildingBtn").click(function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-default").addClass("in");
+            //$("#building").val($(this).attr("data"))
+            $.ajax({
+                type: "GET",
+                url: _ajaxLink + "backend/?c=location&m=getBuilding",
+                success: function (data) {
+                    if (data.state == 1) {
+                        $("#building").val(data.ret);
+                    } else {
+                        alert("API error");
+                    }
+                },
+                dataType: "json"
+            })
+            $("#modal-default").show();
         })
+
 
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=location&m=getBuildings",
             success: function (data) {
                 if (data.state == 1) {
-                    $.each(data.ret,function(k,v)
-                    {
-                        $("#buildings").append("<tr><td>"+v.building+"</td><td><button type=\"button\" class=\"btn btn-default fa fa-edit\" data-toggle=\"modal\" data-target=\"#modal-default\"\n" +
+                    $.each(data.ret, function (k, v) {
+                        $("#buildings").append("<tr><td>" + v.building + "</td><td><button type=\"button\" class=\"btn btn-default fa fa-edit\" data-toggle=\"modal\" data='" + v.building + "' data-id='" + v.id + "' data-target=\"#modal-default\"\n" +
                             ">\n" +
                             "\n" +
                             "</button></td></tr>");
@@ -329,21 +336,53 @@
         })
 
         $("#submit").click(function () {
-            //$("#addBuilding").submit();
-            $.ajax({
-                type: "POST",
-                url: _ajaxLink + "backend/?c=location&m=addBuilding",
-                data: {building: $("#building").val()},
-                success: function (data) {
-                    if (data.state == 1) {
-                        location.reload();
-                    } else {
-                        alert("API error");
-                    }
-                },
-                dataType: "json"
-            })
+            if ($(this).attr("attr") == "edit") {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=editBuilding",
+                    data: {id: $("#buildingId").val(), building: $("#building").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=addBuilding",
+                    data: {building: $("#building").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            }
+
         });
+
+        $(document).on("click", ".fa-edit", function () {
+
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-default").addClass("in");
+            $("#building").val($(this).attr("data"))
+            $("#buildingId").val($(this).attr("data-id"))
+            $("#submit").attr("attr", "edit")
+            $("#modal-default").show();
+
+        });
+        $("[data-dismiss|='modal']").click(function () {
+            $("#modal-default").removeClass("in");
+            $("#modal-default").hide();
+            $(".modal-backdrop").remove();
+        })
     })
 
 </script>
