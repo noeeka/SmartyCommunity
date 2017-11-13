@@ -44,8 +44,9 @@ class Location extends CI_Controller
     //获取栋列表
     public function getBuildings()
     {
+        $this->lang->load('basic_info',get_cookie('lang'));
         $result = $this->db->get('building')->result();
-        echo json_encode(array("state" => 1, "ret" => $result));
+        echo json_encode(array("state" => 1, "ret" => $result,"confirm"=>$this->lang->line('building_remove_confirm')));
     }
 
     //编辑楼栋信息、
@@ -60,6 +61,12 @@ class Location extends CI_Controller
         );
         $this->db->where('id', $id);
         $this->db->update('building', $data);
+        echo json_encode(array("state" => 1, "ret" => "success"));
+    }
+    //删除楼栋单元信息
+    function removeBuilding(){
+        $id = $this->input->post('id');
+        $this->db->delete('building', array('id' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
 }

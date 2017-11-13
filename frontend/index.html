@@ -85,8 +85,8 @@
     }
     $(function () {
         $("#showLang").change(function () {
-            $.cookie('lang', null);
-            $.cookie('lang', $(this).val());
+            $.cookie('lang', null, {path: '/'});
+            $.cookie('lang', $(this).val(),{path: '/'});
             location.reload();
         });
         $('#login').click(function () {
@@ -96,6 +96,7 @@
                 data: {username: $("#username").val(), password: $("#password").val(), lang: lang},
                 success: function (data) {
                     if (data.state == 1) {
+                        $.cookie('lang', $("#showLang").val(),{path: '/'});
                         window.location.href = _ajaxLink + "frontend/dashboard.html";
                     } else {
                         $("#loginInfo").html(data.ret);
@@ -114,6 +115,7 @@
                 data: {username: $("#username").val(), password: $("#password").val(), lang: lang},
                 success: function (data) {
                     if (data.state == 1) {
+                        $.cookie('lang', $("#showLang").val(),{path: '/'});
                         window.location.href = _ajaxLink + "frontend/dashboard.html";
                     } else {
                         $("#loginInfo").html(data.ret);

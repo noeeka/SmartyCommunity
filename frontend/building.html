@@ -242,7 +242,7 @@
                     <input type="hidden" id="buildingId">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
                     <button type="button" class="btn btn-primary" data-lang="string_lang101" id="submit">Save changes
                     </button>
                 </div>
@@ -322,10 +322,10 @@
             success: function (data) {
                 if (data.state == 1) {
                     $.each(data.ret, function (k, v) {
-                        $("#buildings").append("<tr><td>" + v.building + "</td><td><button type=\"button\" class=\"btn btn-default fa fa-edit\" data-toggle=\"modal\" data='" + v.building + "' data-id='" + v.id + "' data-target=\"#modal-default\"\n" +
-                            ">\n" +
+                        $("#buildings").append("<tr><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.building + "' data-id='" + v.id + "' \n" +
+                            " data-lang='string_lang23'>\n" +
                             "\n" +
-                            "</button></td></tr>");
+                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='"+data.confirm+"' data-id='" + v.id + "'\n"+">\n" +"</button></div></td></tr>");
 
                     });
                 } else {
@@ -341,6 +341,20 @@
                     type: "POST",
                     url: _ajaxLink + "backend/?c=location&m=editBuilding",
                     data: {id: $("#buildingId").val(), building: $("#building").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            }else if($(this).attr("attr") == "remove"){
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=removeBuilding",
+                    data: {id: $(this).attr("data-id")},
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -369,12 +383,24 @@
         });
 
         $(document).on("click", ".fa-edit", function () {
-
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
             $("#building").val($(this).attr("data"))
             $("#buildingId").val($(this).attr("data-id"))
             $("#submit").attr("attr", "edit")
+            $("#modal-default").show();
+
+        });
+
+        $(document).on("click", ".fa-trash", function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            //$("#modal-default").addClass("modal-danger");
+            $("#modal-default").addClass("in");
+            $(".modal-title").html("");
+            $(".modal-body").html($(this).attr("confirm"))
+            $("#submit").attr("data-id",$(this).attr("data-id"))
+            $("#submit").attr("attr", "remove")
+            $("#submit").addClass("btn-danger")
             $("#modal-default").show();
 
         });
@@ -407,6 +433,7 @@
                     }
                     document.title = $.i18n.map['string_title'];
                     $('#nav_search').attr("placeholder", $.i18n.map['string_nav_search']);
+
                 }
             });
         }

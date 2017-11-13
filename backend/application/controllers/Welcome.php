@@ -3,13 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
 	public function login(){
-	    if(empty($_POST['lang'])){
-            $_COOKIE['lang']="chinese";
-        }else{
-            $_COOKIE['lang']=$this->input->post("lang");
-        }
 
-        $this->lang->load('form_validation',$_COOKIE['lang']);
+        $this->lang->load('form_validation',$this->input->post("lang"));
         $username=$this->input->post('username');
         $password=$this->input->post('password');
 
