@@ -69,4 +69,18 @@ class Location extends CI_Controller
         $this->db->delete('building', array('id' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
+    //添加单元信息
+    function addUnit(){
+        $building = $this->input->post("building");
+        $unit = $this->input->post("unit");
+        $data = array(
+            'building' => $building,
+            'unit' => $unit
+        );
+
+        $result = $this->db->insert('unity', $data);
+        if ($result) {
+            echo json_encode(array("state" => 1, "ret" => 1));
+        }
+    }
 }
