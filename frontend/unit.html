@@ -196,11 +196,12 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <th data-lang="string_lang25"></th>
                                     <th data-lang="string_lang23"></th>
                                     <th></th>
                                 </tr>
                                 </thead>
-                                <tbody id="buildings">
+                                <tbody id="units">
 
                                 </tfoot>
                             </table>
@@ -208,7 +209,6 @@
                         <!-- /.box-body -->
                     </div>
                 </div>
-                s
             </div>
             <!-- /.row -->
             <!-- Main row -->
@@ -247,7 +247,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="text" id="unit"></td>
+                            <td><input type="text" id="unit">
+                            <input type="hidden" id="unitId">
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -298,7 +300,7 @@
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -346,12 +348,28 @@
             dataType: "json"
         })
 
+        $.ajax({
+            type: "GET",
+            url: _ajaxLink + "backend/?c=location&m=getUnits",
+            success: function (data) {
+                if (data.state == 1) {
+                    $.each(data.ret, function (k, v) {
+                        $("#units").append("<tr><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.unit + "' data-id='" + v.id + "' building='"+v.buildingId+"' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>");
+
+                    });
+                } else {
+                    alert("API error");
+                }
+            },
+            dataType: "json"
+        })
+
         $("#submit").click(function () {
             if ($(this).attr("attr") == "edit") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=editBuilding",
-                    data: {id: $("#buildingId").val(), building: $("#building").val()},
+                    url: _ajaxLink + "backend/?c=location&m=editUnit",
+                    data: {id: $("#unitId").val(),building: $("#showBuildings").val(),unit:$("#unit").val()},
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -364,7 +382,7 @@
             } else if ($(this).attr("attr") == "remove") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=removeBuilding",
+                    url: _ajaxLink + "backend/?c=location&m=removeUnit",
                     data: {id: $(this).attr("data-id")},
                     success: function (data) {
                         if (data.state == 1) {
@@ -396,8 +414,12 @@
         $(document).on("click", ".fa-edit", function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
-            $("#building").val($(this).attr("data"))
-            $("#buildingId").val($(this).attr("data-id"))
+            $("#unit").val($(this).attr("data"))
+            $("#unitId").val($(this).attr("data-id"))
+            //$("#showBuildings option[text="+$(this).attr("building")+"]").attr("selected", true);
+            //alert($(this).attr("building"));
+            $("#showBuildings").val($(this).attr("building"));
+            //$("#showBuildings").val()
             $("#submit").attr("attr", "edit")
             $("#modal-default").show();
 

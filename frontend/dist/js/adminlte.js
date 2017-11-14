@@ -1125,3 +1125,6 @@ throw new Error('AdminLTE requires jQuery')
   })
 
 }(jQuery)
+
+_ajaxLink="http://www.smarty.com/";
+var rpp=2;

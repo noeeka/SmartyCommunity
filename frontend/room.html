@@ -23,7 +23,8 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -173,15 +174,18 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1 data-lang="string_lang10">
-                Dashboard
-                <small>Control panel</small>
-            </h1>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default" data-lang="string_lang27" id="addRoomBtn">
+        </button>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
+                    data-lang="string_lang28" id="addOutDoorBtn">
+            </button>
+
             <ol class="breadcrumb">
                 <li><a href="#" data-lang="string_lang11"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active" data-lang="string_lang10">Dashboard</li>
             </ol>
         </section>
+
 
         <!-- Main content -->
         <section class="content">
@@ -189,451 +193,45 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Hover Data Table</h3>
-                        </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
+                                    <th data-lang="string_lang30"></th>
+                                    <th data-lang="string_lang25"></th>
+                                    <th data-lang="string_lang23"></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 4.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td> 4</td>
-                                    <td>X</td>
-                                </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 5.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td>5</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 5.5
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td>5.5</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 6
-                                    </td>
-                                    <td>Win 98+</td>
-                                    <td>6</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 7</td>
-                                    <td>Win XP SP2+</td>
-                                    <td>7</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>AOL browser (AOL desktop)</td>
-                                    <td>Win XP</td>
-                                    <td>6</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Firefox 1.0</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.7</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Firefox 1.5</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Firefox 2.0</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Firefox 3.0</td>
-                                    <td>Win 2k+ / OSX.3+</td>
-                                    <td>1.9</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Camino 1.0</td>
-                                    <td>OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Camino 1.5</td>
-                                    <td>OSX.3+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Netscape 7.2</td>
-                                    <td>Win 95+ / Mac OS 8.6-9.2</td>
-                                    <td>1.7</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Netscape Browser 8</td>
-                                    <td>Win 98SE+</td>
-                                    <td>1.7</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Netscape Navigator 9</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.0</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.1</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1.1</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.2</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1.2</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.3</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1.3</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.4</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1.4</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.5</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1.5</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.6</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1.6</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.7</td>
-                                    <td>Win 98+ / OSX.1+</td>
-                                    <td>1.7</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Mozilla 1.8</td>
-                                    <td>Win 98+ / OSX.1+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Seamonkey 1.1</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Gecko</td>
-                                    <td>Epiphany 2.20</td>
-                                    <td>Gnome</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>Safari 1.2</td>
-                                    <td>OSX.3</td>
-                                    <td>125.5</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>Safari 1.3</td>
-                                    <td>OSX.3</td>
-                                    <td>312.8</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>Safari 2.0</td>
-                                    <td>OSX.4+</td>
-                                    <td>419.3</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>Safari 3.0</td>
-                                    <td>OSX.4+</td>
-                                    <td>522.1</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>OmniWeb 5.5</td>
-                                    <td>OSX.4+</td>
-                                    <td>420</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>iPod Touch / iPhone</td>
-                                    <td>iPod</td>
-                                    <td>420.1</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Webkit</td>
-                                    <td>S60</td>
-                                    <td>S60</td>
-                                    <td>413</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 7.0</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 7.5</td>
-                                    <td>Win 95+ / OSX.2+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 8.0</td>
-                                    <td>Win 95+ / OSX.2+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 8.5</td>
-                                    <td>Win 95+ / OSX.2+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 9.0</td>
-                                    <td>Win 95+ / OSX.3+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 9.2</td>
-                                    <td>Win 88+ / OSX.3+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera 9.5</td>
-                                    <td>Win 88+ / OSX.3+</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Opera for Wii</td>
-                                    <td>Wii</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Nokia N800</td>
-                                    <td>N800</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Presto</td>
-                                    <td>Nintendo DS browser</td>
-                                    <td>Nintendo DS</td>
-                                    <td>8.5</td>
-                                    <td>C/A<sup>1</sup></td>
-                                </tr>
-                                <tr>
-                                    <td>KHTML</td>
-                                    <td>Konqureror 3.1</td>
-                                    <td>KDE 3.1</td>
-                                    <td>3.1</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>KHTML</td>
-                                    <td>Konqureror 3.3</td>
-                                    <td>KDE 3.3</td>
-                                    <td>3.3</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>KHTML</td>
-                                    <td>Konqureror 3.5</td>
-                                    <td>KDE 3.5</td>
-                                    <td>3.5</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Tasman</td>
-                                    <td>Internet Explorer 4.5</td>
-                                    <td>Mac OS 8-9</td>
-                                    <td>-</td>
-                                    <td>X</td>
-                                </tr>
-                                <tr>
-                                    <td>Tasman</td>
-                                    <td>Internet Explorer 5.1</td>
-                                    <td>Mac OS 7.6-9</td>
-                                    <td>1</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Tasman</td>
-                                    <td>Internet Explorer 5.2</td>
-                                    <td>Mac OS 8-X</td>
-                                    <td>1</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>NetFront 3.1</td>
-                                    <td>Embedded devices</td>
-                                    <td>-</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>NetFront 3.4</td>
-                                    <td>Embedded devices</td>
-                                    <td>-</td>
-                                    <td>A</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>Dillo 0.8</td>
-                                    <td>Embedded devices</td>
-                                    <td>-</td>
-                                    <td>X</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>Links</td>
-                                    <td>Text only</td>
-                                    <td>-</td>
-                                    <td>X</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>Lynx</td>
-                                    <td>Text only</td>
-                                    <td>-</td>
-                                    <td>X</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>IE Mobile</td>
-                                    <td>Windows Mobile 6</td>
-                                    <td>-</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>PSP browser</td>
-                                    <td>PSP</td>
-                                    <td>-</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Other browsers</td>
-                                    <td>All others</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>U</td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
+                                <tbody id="rooms">
+
                                 </tfoot>
                             </table>
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li>
+                                        <a href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li>
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                         <!-- /.box-body -->
                     </div>
                 </div>
-                <!-- ./col -->
-
-                <!-- ./col -->
-
-                <!-- ./col -->
-
-                <!-- ./col -->
             </div>
             <!-- /.row -->
             <!-- Main row -->
@@ -652,6 +250,49 @@
         reserved.
     </footer>
     <div class="control-sidebar-bg"></div>
+</div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="" method="POST" id="addBuilding">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" data-lang="string_lang23">Default Modal</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <select id="showBuildings" class="form-control">
+                                    <option data-lang="string_lang24">请选择语言</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select id="showUnits" class="form-control">
+                                    <option data-lang="string_lang29">请选择语言</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="room">
+                                <input type="hidden" id="unitId">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" data-lang="string_lang101" id="submit">Save changes
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 <!-- ./wrapper -->
 
@@ -689,7 +330,7 @@
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -697,14 +338,39 @@
 <script>
 
     $(function () {
+        $("#addBuildingBtn").click(function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-default").addClass("in");
+            //$("#building").val($(this).attr("data"))
+            $.ajax({
+                type: "GET",
+                url: _ajaxLink + "backend/?c=location&m=getBuilding",
+                success: function (data) {
+                    if (data.state == 1) {
+                        $("#building").val(data.ret);
+                    } else {
+                        alert("API error");
+                    }
+                },
+                dataType: "json"
+            })
+            $("#modal-default").show();
+        })
+
+
         $.ajax({
             type: "GET",
-            url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+            url: _ajaxLink + "backend/?c=location&m=getBuildings",
             success: function (data) {
                 if (data.state == 1) {
-                    $(".logo-lg").html(data.ret.project_name);
-                    $(".hidden-xs").html(data.ret.username);
+                    $.each(data.ret, function (k, v) {
+                        $("#showBuildings").append("<option value='"+v.id+"'>"+v.building+"</option>");
+                        $("#buildings").append("<tr><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.building + "' data-id='" + v.id + "' \n" +
+                            " data-lang='string_lang23'>\n" +
+                            "\n" +
+                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>");
 
+                    });
                 } else {
                     alert("API error");
                 }
@@ -713,8 +379,172 @@
         })
 
 
-    })
+        $('#showBuildings').on('change',function(){
+            if($(this).val()){
+                var building=$(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: _ajaxLink + "backend/?c=location&m=getUnitsByBuilding",
+                    data:{building:building},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            $("#showUnits").html("");
+                            $.each(data.ret, function (k, v) {
+                                $("#showUnits").append("<option value='" + v.id + "'>" + v.unit + "</option>");
+                            });
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            }else{
 
+            }
+        });
+
+        ajaxPagination(1);
+
+        $("#submit").click(function () {
+            if ($(this).attr("attr") == "edit") {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=editUnit",
+                    data: {id: $("#unitId").val(),building: $("#showBuildings").val(),unit:$("#unit").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            } else if ($(this).attr("attr") == "remove") {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=removeUnit",
+                    data: {id: $(this).attr("data-id")},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=addRoom",
+                    data: {building: $("#showBuildings").val(),unit:$("#showUnits").val(),room:$("#room").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            }
+
+        });
+
+        $(document).on("click", ".fa-edit", function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-default").addClass("in");
+            $("#unit").val($(this).attr("data"))
+            $("#unitId").val($(this).attr("data-id"))
+            //$("#showBuildings option[text="+$(this).attr("building")+"]").attr("selected", true);
+            //alert($(this).attr("building"));
+            $("#showBuildings").val($(this).attr("building"));
+            //$("#showBuildings").val()
+            $("#submit").attr("attr", "edit")
+            $("#modal-default").show();
+
+        });
+
+        $(document).on("click", ".fa-trash", function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            //$("#modal-default").addClass("modal-danger");
+            $("#modal-default").addClass("in");
+            $(".modal-title").html("");
+            $(".modal-body").html($(this).attr("confirm"))
+            $("#submit").attr("data-id", $(this).attr("data-id"))
+            $("#submit").attr("attr", "remove")
+            $("#submit").addClass("btn-danger")
+            $("#modal-default").show();
+
+        });
+        $("[data-dismiss|='modal']").click(function () {
+            $("#modal-default").removeClass("in");
+            $("#modal-default").hide();
+            $(".modal-backdrop").remove();
+        })
+    })
+function ajaxPagination(page){
+    $.ajax({
+        type: "GET",
+        url: _ajaxLink + "backend/?c=location&m=getRooms",
+        data:{rpp:rpp,page:page},
+        success: function (data) {
+            if (data.state == 1) {
+                var innerStr="";
+                $.each(data.ret, function (k, v) {
+                    innerStr=innerStr+"<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.room + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.unit + "' data-id='" + v.id + "' building='"+v.buildingId+"' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+
+                });
+                $("#rooms").html(innerStr);
+                if(data.total>rpp){
+                    var page_num=Math.ceil(data.total / rpp)
+
+                    pagination_left = '<li><a href="#1" aria-label="Previous" onclick="ajaxPagination(1)"><span aria-hidden="true">«</span></a></li>';
+                    pagination = '';
+                    var pageIndex = parseInt(window.location.href.split("#").pop());
+                    pageIndex = pageIndex?pageIndex:1;
+                    pageFirst = pageIndex-4;
+                    console.log('pageIndex', pageIndex);
+                    var pageCount = 0;
+                    for (i = pageIndex-4; i <=page_num; i++) {
+                        if(i <= 0) {
+                            continue;
+                        }
+                        if(pageFirst <= 0) {
+                            pageFirst = i;
+                        }
+                        if(pageCount >= 9) {
+                            break;
+                        }
+                        if (pageIndex == i) {
+                            pagination += '<li class="active"><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
+                        } else {
+                            pagination += '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
+                        }
+                        ++pageCount;
+                    }
+                    for(i = pageFirst-1; i > 0;--i) {
+                        if(pageCount >= 9) {
+                            break;
+                        }
+                        pagination = '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>' + pagination;
+                        ++pageCount;
+                    }
+                    pagination += '<li><a href="#' + page_num + '" onclick="ajaxPagination(' + page_num + ')">&raquo;</a></li>';
+                    pagination = pagination_left + pagination;
+                    $(".pagination").html(pagination);
+
+                }
+
+
+            } else {
+                alert("API error");
+            }
+        },
+        dataType: "json"
+    })
+}
 </script>
 <script>
     if ($.cookie('lang') == "english") {
@@ -736,7 +566,8 @@
                         $('[data-lang="' + i + '"]').text($.i18n.map[i]);
                     }
                     document.title = $.i18n.map['string_title'];
-                    $('#nav_search').attr("placeholder",$.i18n.map['string_nav_search']);
+                    $('#nav_search').attr("placeholder", $.i18n.map['string_nav_search']);
+
                 }
             });
         }
