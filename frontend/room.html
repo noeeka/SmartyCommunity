@@ -26,16 +26,15 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
-
     <header class="main-header">
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b>LT</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -124,7 +123,7 @@
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-dashboard"></i> <span data-lang="string_lang2"></span>
                         <span class="pull-right-container">
@@ -132,22 +131,22 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="project.html" data-lang="string_lang3"></a></li>
+                        <li><a href="setting.html" data-lang="string_lang3"></a></li>
 
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class="active treeview">
                     <a href="#">
-                        <i class="fa fa-pie-chart"></i>
+                        <i class="fa fa-building"></i>
                         <span data-lang="string_lang4"></span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="pages/charts/chartjs.html" data-lang="string_lang5"></a></li>
-                        <li><a href="pages/charts/morris.html" data-lang="string_lang6"></a></li>
-                        <li><a href="pages/charts/flot.html" data-lang="string_lang7"></a></li>
+                        <li><a href="building.html" data-lang="string_lang5"></a></li>
+                        <li><a href="unit.html" data-lang="string_lang6"></a></li>
+                        <li class="active"><a href="room.html" data-lang="string_lang7"></a></li>
 
                     </ul>
                 </li>
@@ -174,8 +173,9 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default" data-lang="string_lang27" id="addRoomBtn">
-        </button>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
+                    data-lang="string_lang27" id="addRoomBtn">
+            </button>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
                     data-lang="string_lang28" id="addOutDoorBtn">
             </button>
@@ -258,7 +258,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" data-lang="string_lang23">Default Modal</h4>
+                    <h4 class="modal-title" data-lang="string_lang30">Default Modal</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table">
@@ -277,7 +277,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="text" id="room">
+                            <td>
+                                <input type="text" id="room" class="form-control">
                                 <input type="hidden" id="roomId">
                             </td>
                         </tr>
@@ -338,6 +339,19 @@
 <script>
 
     $(function () {
+        $.ajax({
+            type: "GET",
+            url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+            success: function (data) {
+                if (data.state == 1) {
+                    $(".logo-lg").html(data.ret.project_name);
+                    $(".hidden-xs").html(data.ret.username);
+                } else {
+                    alert("API error");
+                }
+            },
+            dataType: "json"
+        })
         $("#addBuildingBtn").click(function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
@@ -364,7 +378,7 @@
             success: function (data) {
                 if (data.state == 1) {
                     $.each(data.ret, function (k, v) {
-                        $("#showBuildings").append("<option value='"+v.id+"'>"+v.building+"</option>");
+                        $("#showBuildings").append("<option value='" + v.id + "'>" + v.building + "</option>");
 
                     });
                 } else {
@@ -380,11 +394,7 @@
             success: function (data) {
                 if (data.state == 1) {
                     $.each(data.ret, function (k, v) {
-                        $("#showBuildings").append("<option value='"+v.id+"'>"+v.building+"</option>");
-                        $("#buildings").append("<tr><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.building + "' data-id='" + v.id + "' \n" +
-                            " data-lang='string_lang23'>\n" +
-                            "\n" +
-                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>");
+                        $("#showUnits").append("<option value='" + v.id + "'>" + v.unit + "</option>");
 
                     });
                 } else {
@@ -395,13 +405,13 @@
         })
 
 
-        $('#showBuildings').on('change',function(){
-            if($(this).val()){
-                var building=$(this).val();
+        $('#showBuildings').on('change', function () {
+            if ($(this).val()) {
+                var building = $(this).val();
                 $.ajax({
                     type: "GET",
                     url: _ajaxLink + "backend/?c=location&m=getUnitsByBuilding",
-                    data:{building:building},
+                    data: {building: building},
                     success: function (data) {
                         if (data.state == 1) {
                             $("#showUnits").html("");
@@ -414,7 +424,7 @@
                     },
                     dataType: "json"
                 })
-            }else{
+            } else {
 
             }
         });
@@ -426,7 +436,7 @@
                 $.ajax({
                     type: "POST",
                     url: _ajaxLink + "backend/?c=location&m=editUnit",
-                    data: {id: $("#unitId").val(),building: $("#showBuildings").val(),unit:$("#unit").val()},
+                    data: {id: $("#unitId").val(), building: $("#showBuildings").val(), unit: $("#unit").val()},
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -439,7 +449,7 @@
             } else if ($(this).attr("attr") == "remove") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=removeUnit",
+                    url: _ajaxLink + "backend/?c=location&m=removeRoom",
                     data: {id: $(this).attr("data-id")},
                     success: function (data) {
                         if (data.state == 1) {
@@ -454,7 +464,7 @@
                 $.ajax({
                     type: "POST",
                     url: _ajaxLink + "backend/?c=location&m=addRoom",
-                    data: {building: $("#showBuildings").val(),unit:$("#showUnits").val(),room:$("#room").val()},
+                    data: {building: $("#showBuildings").val(), unit: $("#showUnits").val(), room: $("#room").val()},
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -501,67 +511,69 @@
             $(".modal-backdrop").remove();
         })
     })
-function ajaxPagination(page){
-    $.ajax({
-        type: "GET",
-        url: _ajaxLink + "backend/?c=location&m=getRooms",
-        data:{rpp:rpp,page:page},
-        success: function (data) {
-            if (data.state == 1) {
-                var innerStr="";
-                $.each(data.ret, function (k, v) {
-                    innerStr=innerStr+"<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.room + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='"+v.buildingId+"' unit='"+v.unitId+"' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
-                });
-                $("#rooms").html(innerStr);
-                if(data.total>rpp){
-                    var page_num=Math.ceil(data.total / rpp)
+    function ajaxPagination(page) {
+        $.ajax({
+            type: "GET",
+            url: _ajaxLink + "backend/?c=location&m=getRooms",
+            data: {rpp: rpp, page: page},
+            success: function (data) {
+                if (data.state == 1) {
+                    var innerStr = "";
+                    $.each(data.ret, function (k, v) {
+                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.room + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
-                    pagination_left = '<li><a href="#1" aria-label="Previous" onclick="ajaxPagination(1)"><span aria-hidden="true">«</span></a></li>';
-                    pagination = '';
-                    var pageIndex = parseInt(window.location.href.split("#").pop());
-                    pageIndex = pageIndex?pageIndex:1;
-                    pageFirst = pageIndex-4;
-                    console.log('pageIndex', pageIndex);
-                    var pageCount = 0;
-                    for (i = pageIndex-4; i <=page_num; i++) {
-                        if(i <= 0) {
-                            continue;
+                    });
+                    $("#rooms").html(innerStr);
+                    if (data.total > rpp) {
+                        var page_num = Math.ceil(data.total / rpp)
+
+                        pagination_left = '<li><a href="#1" aria-label="Previous" onclick="ajaxPagination(1)"><span aria-hidden="true">«</span></a></li>';
+                        pagination = '';
+                        var pageIndex = parseInt(window.location.href.split("#").pop());
+                        pageIndex = pageIndex ? pageIndex : 1;
+                        pageFirst = pageIndex - 4;
+                        var pageCount = 0;
+                        for (i = pageIndex - 4; i <= page_num; i++) {
+                            if (i <= 0) {
+                                continue;
+                            }
+                            if (pageFirst <= 0) {
+                                pageFirst = i;
+                            }
+                            if (pageCount >= 9) {
+                                break;
+                            }
+                            if (pageIndex == i) {
+                                pagination += '<li class="active"><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
+                            } else {
+                                pagination += '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
+                            }
+                            ++pageCount;
                         }
-                        if(pageFirst <= 0) {
-                            pageFirst = i;
+                        for (i = pageFirst - 1; i > 0; --i) {
+                            if (pageCount >= 9) {
+                                break;
+                            }
+                            pagination = '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>' + pagination;
+                            ++pageCount;
                         }
-                        if(pageCount >= 9) {
-                            break;
-                        }
-                        if (pageIndex == i) {
-                            pagination += '<li class="active"><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
-                        } else {
-                            pagination += '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
-                        }
-                        ++pageCount;
+                        pagination += '<li><a href="#' + page_num + '" onclick="ajaxPagination(' + page_num + ')">&raquo;</a></li>';
+                        pagination = pagination_left + pagination;
+                        $(".pagination").html(pagination);
+
+                    } else {
+                        $(".pagination").html("");
                     }
-                    for(i = pageFirst-1; i > 0;--i) {
-                        if(pageCount >= 9) {
-                            break;
-                        }
-                        pagination = '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>' + pagination;
-                        ++pageCount;
-                    }
-                    pagination += '<li><a href="#' + page_num + '" onclick="ajaxPagination(' + page_num + ')">&raquo;</a></li>';
-                    pagination = pagination_left + pagination;
-                    $(".pagination").html(pagination);
 
+
+                } else {
+                    alert("API error");
                 }
-
-
-            } else {
-                alert("API error");
-            }
-        },
-        dataType: "json"
-    })
-}
+            },
+            dataType: "json"
+        })
+    }
 </script>
 <script>
     if ($.cookie('lang') == "english") {

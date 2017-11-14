@@ -23,18 +23,18 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
-
     <header class="main-header">
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b>LT</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -131,13 +131,13 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="project.html" data-lang="string_lang3"></a></li>
+                        <li class="active"><a href="setting.html" data-lang="string_lang3"></a></li>
 
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-pie-chart"></i>
+                        <i class="fa fa-building"></i>
                         <span data-lang="string_lang4"></span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -177,10 +177,7 @@
                 Dashboard
                 <small>Control panel</small>
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="#" data-lang="string_lang11"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active" data-lang="string_lang10">Dashboard</li>
-            </ol>
+
         </section>
 
         <!-- Main content -->
@@ -212,7 +209,9 @@
                             <!-- /.box-body -->
 
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-primary" data-lang="string_lang100" id="submit">Submit</button>
+                                <button type="button" class="btn btn-primary" data-lang="string_lang100" id="submit">
+                                    Submit
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -248,7 +247,10 @@
                 <p>One fine body&hellip;</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline" data-dismiss="modal" data-lang="string_lang101">Save changes</button>
+                <button type="button" class="btn btn-outline" id="submit-btn" data-dismiss="modal"
+                        data-lang="string_lang101">Save
+                    changes
+                </button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -292,7 +294,7 @@
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -305,6 +307,8 @@
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
             success: function (data) {
                 if (data.state == 1) {
+                    $(".logo-lg").html(data.ret.project_name);
+                    $(".hidden-xs").html(data.ret.username);
                     $("#projectname").val(data.ret.project_name);
                     $("#address").val(data.ret.address);
                     $("#tel").val(data.ret.tel);
@@ -314,43 +318,59 @@
             },
             dataType: "json"
         })
-$("#submit").click(function () {
-    var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
-    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-    var tel=$("#tel").val();
-    if(!isMobile.test(tel) && !isPhone.test(tel)){
-        $(".modal-body").html("<h2>"+$.i18n.map['string_error_tel']+"</h2>");
-        $('body').append('<div class="modal-backdrop fade in"></div>');
-        $("#modal-warning").addClass("in");
-        $("#modal-warning").show();
-        return false;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: _ajaxLink + "backend/?c=setting&m=systemSetting",
-        data: {project_name: $("#projectname").val(), address: $("#address").val(), tel: tel},
-        success: function (data) {
-            if (data.state == 1) {
-                location.reload();
-            } else {
-                $(".modal-body").html("<h2>API Error</h2>");
+        $("#submit").click(function () {
+            var isMobile = /^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
+            var isPhone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+            var tel = $("#tel").val();
+            if (!isMobile.test(tel) && !isPhone.test(tel)) {
+                $(".modal-body").html("<h2>" + $.i18n.map['string_error_tel'] + "</h2>");
                 $('body').append('<div class="modal-backdrop fade in"></div>');
                 $("#modal-warning").addClass("in");
                 $("#modal-warning").show();
+                $("[data-dismiss|='modal']").attr("attr", "message")
                 return false;
             }
-        },
-        dataType: "json"
-    })
 
-})
+
+            $(".modal-body").html("<h2>" + $.i18n.map['string_confirm_message'] + "</h2>");
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-warning").addClass("in");
+            $("#modal-warning").show();
+            $("[data-dismiss|='modal']").attr("attr", "edit")
+            return false;
+
+        })
+
+        $(document).on("click", "#submit-btn", function () {
+
+            //$("[data-dismiss|='modal']").click(function () {
+            if ($(this).attr("attr") == "message") {
+                $("#modal-warning").removeClass("in");
+                $("#modal-warning").hide();
+                $(".modal-backdrop").remove();
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+                    data: {project_name: $("#projectname").val(), address: $("#address").val(), tel: $("#tel").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API");
+                        }
+                    },
+                    dataType: "json"
+                })
+            }
+
+
+        })
 
         $("[data-dismiss|='modal']").click(function () {
             $("#modal-warning").removeClass("in");
             $("#modal-warning").hide();
             $(".modal-backdrop").remove();
-
         })
 
     })
@@ -376,7 +396,7 @@ $("#submit").click(function () {
                         $('[data-lang="' + i + '"]').text($.i18n.map[i]);
                     }
                     document.title = $.i18n.map['string_title'];
-                    $('#nav_search').attr("placeholder",$.i18n.map['string_nav_search']);
+                    $('#nav_search').attr("placeholder", $.i18n.map['string_nav_search']);
                 }
             });
         }

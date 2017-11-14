@@ -58,7 +58,7 @@
 
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="button" class="btn btn-primary btn-block btn-flat" id="login">登录</button>
+                    <button type="button" class="btn btn-primary btn-block btn-flat" id="login" data-lang="string_lang31">登录</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -70,11 +70,13 @@
 
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.i18n.properties.min.js"></script>
 <script src="bower_components/jquery/dist/jquery.cookie.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
+<script src="dist/js/adminlte.js"></script>
 <script>
     if ($.cookie('lang') == null || $.cookie('lang')=="") {
         $("#showLang").val("chinese")
@@ -83,7 +85,32 @@
         $("#showLang").val($.cookie('lang'))
         var lang = $.cookie('lang');
     }
+    if (lang == "english") {
+        tem_lang = "en"
+    }
+    if (lang == "chinese") {
+        tem_lang = "zh"
+    }
+    var language_pack = {
+        loadProperties: function () {
+            jQuery.i18n.properties({
+                name: 'string',
+                path: 'language/',
+                language: tem_lang,
+                mode: 'map',
+                callback: function () {
+                    for (var i in $.i18n.map) {
+                        $('[data-lang="' + i + '"]').text($.i18n.map[i]);
+                    }
+                    document.title = $.i18n.map['string_title'];
+                    $('#nav_search').attr("placeholder",$.i18n.map['string_nav_search']);
+                }
+            });
+        }
+    }
+
     $(function () {
+        language_pack.loadProperties();
         $("#showLang").change(function () {
             $.cookie('lang', null, {path: '/'});
             $.cookie('lang', $(this).val(),{path: '/'});

@@ -26,16 +26,16 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b>LT</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -124,7 +124,7 @@
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-dashboard"></i> <span data-lang="string_lang2"></span>
                         <span class="pull-right-container">
@@ -132,22 +132,22 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="project.html" data-lang="string_lang3"></a></li>
+                        <li><a href="setting.html" data-lang="string_lang3"></a></li>
 
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class="active treeview">
                     <a href="#">
-                        <i class="fa fa-pie-chart"></i>
+                        <i class="fa fa-building"></i>
                         <span data-lang="string_lang4"></span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="pages/charts/chartjs.html" data-lang="string_lang5"></a></li>
-                        <li><a href="pages/charts/morris.html" data-lang="string_lang6"></a></li>
-                        <li><a href="pages/charts/flot.html" data-lang="string_lang7"></a></li>
+                        <li class="active"><a href="building.html" data-lang="string_lang5"></a></li>
+                        <li><a href="unit.html" data-lang="string_lang6"></a></li>
+                        <li><a href="room.html" data-lang="string_lang7"></a></li>
 
                     </ul>
                 </li>
@@ -237,7 +237,7 @@
                     <h4 class="modal-title" data-lang="string_lang23">Default Modal</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="building">
+                    <input type="text" id="building" class="form-control">
                     <input type="hidden" id="buildingId">
                 </div>
                 <div class="modal-footer">
@@ -295,6 +295,19 @@
 <script>
 
     $(function () {
+        $.ajax({
+            type: "GET",
+            url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+            success: function (data) {
+                if (data.state == 1) {
+                    $(".logo-lg").html(data.ret.project_name);
+                    $(".hidden-xs").html(data.ret.username);
+                } else {
+                    alert("API error");
+                }
+            },
+            dataType: "json"
+        })
         $("#addBuildingBtn").click(function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");

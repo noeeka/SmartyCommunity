@@ -176,4 +176,11 @@ class Location extends CI_Controller
         echo json_encode(array("state" => 1, "ret" => $res,"confirm"=>$this->lang->line('building_remove_confirm'),"total"=>$this->db->count_all_results('room')));
 
     }
+
+    //删除房间服务
+    function removeRoom(){
+        $id = $this->input->post('id');
+        $this->db->delete('room', array('id' => $id));
+        echo json_encode(array("state" => 1, "ret" => "success"));
+    }
 }
