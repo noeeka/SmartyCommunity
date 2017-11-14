@@ -335,10 +335,6 @@
                 if (data.state == 1) {
                     $.each(data.ret, function (k, v) {
                         $("#showBuildings").append("<option value='"+v.id+"'>"+v.building+"</option>");
-                        $("#buildings").append("<tr><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.building + "' data-id='" + v.id + "' \n" +
-                            " data-lang='string_lang23'>\n" +
-                            "\n" +
-                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>");
 
                     });
                 } else {

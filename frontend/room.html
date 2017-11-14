@@ -278,7 +278,7 @@
                         </tr>
                         <tr>
                             <td><input type="text" id="room">
-                                <input type="hidden" id="unitId">
+                                <input type="hidden" id="roomId">
                             </td>
                         </tr>
                     </table>
@@ -361,6 +361,22 @@
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=location&m=getBuildings",
+            success: function (data) {
+                if (data.state == 1) {
+                    $.each(data.ret, function (k, v) {
+                        $("#showBuildings").append("<option value='"+v.id+"'>"+v.building+"</option>");
+
+                    });
+                } else {
+                    alert("API error");
+                }
+            },
+            dataType: "json"
+        })
+
+        $.ajax({
+            type: "GET",
+            url: _ajaxLink + "backend/?c=location&m=getUnits",
             success: function (data) {
                 if (data.state == 1) {
                     $.each(data.ret, function (k, v) {
@@ -455,11 +471,12 @@
         $(document).on("click", ".fa-edit", function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
-            $("#unit").val($(this).attr("data"))
-            $("#unitId").val($(this).attr("data-id"))
+            $("#room").val($(this).attr("data"))
+            $("#roomId").val($(this).attr("data-id"))
             //$("#showBuildings option[text="+$(this).attr("building")+"]").attr("selected", true);
             //alert($(this).attr("building"));
             $("#showBuildings").val($(this).attr("building"));
+            $("#showUnits").val($(this).attr("unit"));
             //$("#showBuildings").val()
             $("#submit").attr("attr", "edit")
             $("#modal-default").show();
@@ -493,7 +510,7 @@ function ajaxPagination(page){
             if (data.state == 1) {
                 var innerStr="";
                 $.each(data.ret, function (k, v) {
-                    innerStr=innerStr+"<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.room + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.unit + "' data-id='" + v.id + "' building='"+v.buildingId+"' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                    innerStr=innerStr+"<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.room + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='"+v.buildingId+"' unit='"+v.unitId+"' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
                 });
                 $("#rooms").html(innerStr);
