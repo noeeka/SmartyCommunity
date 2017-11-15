@@ -173,11 +173,9 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
-                    data-lang="string_lang27" id="addRoomBtn">
+            <button type="button" class="btn btn-default" data-lang="string_lang27" id="addRoomBtn">
             </button>
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
-                    data-lang="string_lang28" id="addOutDoorBtn">
+            <button type="button" class="btn btn-default" data-lang="string_lang28" id="addOutDoorBtn">
             </button>
 
             <ol class="breadcrumb">
@@ -278,8 +276,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" id="room" class="form-control">
-                                <input type="hidden" id="roomId">
+                                <input type="text" id="data" class="form-control">
+                                <input type="hidden" id="dataId">
                             </td>
                         </tr>
                     </table>
@@ -337,7 +335,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <script>
-
     $(function () {
         $.ajax({
             type: "GET",
@@ -432,10 +429,55 @@
         ajaxPagination(1);
 
         $("#submit").click(function () {
-            if ($(this).attr("attr") == "edit") {
+            if ($(this).attr("attr") == "editRoom") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=editUnit",
+                    url: _ajaxLink + "backend/?c=location&m=editRoom",
+                    data: {id: $("#dataId").val(), building: $("#showBuildings").val(), unit: $("#showUnits").val(),room:$("#data").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            } else if ($(this).attr("attr") == "removeRoom") {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=removeRoom",
+                    data: {id: $(this).attr("data-id")},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            } else if ($(this).attr("attr") == "addRoom"){
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=addRoom",
+                    data: {building: $("#showBuildings").val(), unit: $("#showUnits").val(), room: $("#data").val()},
+                    success: function (data) {
+                        if (data.state == 1) {
+                            location.reload();
+                        } else {
+                            alert("API error");
+                        }
+                    },
+                    dataType: "json"
+                })
+            }
+
+            /*
+            if ($(this).attr("attr") == "edit" && $(this).attr("data-target")=="outdoor") {
+                $.ajax({
+                    type: "POST",
+                    url: _ajaxLink + "backend/?c=location&m=editOutdoor",
                     data: {id: $("#unitId").val(), building: $("#showBuildings").val(), unit: $("#unit").val()},
                     success: function (data) {
                         if (data.state == 1) {
@@ -476,19 +518,19 @@
                 })
             }
 
+            */
+
         });
 
         $(document).on("click", ".fa-edit", function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
-            $("#room").val($(this).attr("data"))
-            $("#roomId").val($(this).attr("data-id"))
-            //$("#showBuildings option[text="+$(this).attr("building")+"]").attr("selected", true);
-            //alert($(this).attr("building"));
+            $("#data").val($(this).attr("data"))
+            $("#dataId").val($(this).attr("data-id"))
             $("#showBuildings").val($(this).attr("building"));
             $("#showUnits").val($(this).attr("unit"));
             //$("#showBuildings").val()
-            $("#submit").attr("attr", "edit")
+            $("#submit").attr("attr", "editRoom")
             $("#modal-default").show();
 
         });
@@ -500,7 +542,7 @@
             $(".modal-title").html("");
             $(".modal-body").html($(this).attr("confirm"))
             $("#submit").attr("data-id", $(this).attr("data-id"))
-            $("#submit").attr("attr", "remove")
+            $("#submit").attr("attr", "removeRoom")
             $("#submit").addClass("btn-danger")
             $("#modal-default").show();
 
@@ -521,7 +563,7 @@
                 if (data.state == 1) {
                     var innerStr = "";
                     $.each(data.ret, function (k, v) {
-                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.room + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
                     });
                     $("#rooms").html(innerStr);
@@ -603,6 +645,26 @@
     }
     $(document).ready(function () {
         language_pack.loadProperties(0);
+        $("#addRoomBtn").click(function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-default").addClass("in");
+            $("#modal-default").show();
+            $(".modal-title").html($.i18n.map['string_lang30']);
+            $("#submit").attr("attr","addRoom")
+        })
+
+        $("#addOutDoorBtn").click(function () {
+            $('body').append('<div class="modal-backdrop fade in"></div>');
+            $("#modal-default").addClass("in");
+            $("#modal-default").show();
+            //$(".modal-title").attr("data-lang","string_lang31");
+            $(".modal-title").html($.i18n.map['string_lang32']);
+            tablesHTML=$(".modal-body").find("table").html();
+            $(".modal-body").find("table").html('');
+
+            $("#submit").attr("attr","addOutdoor")
+
+        })
         $(".fa-sign-in").click(function () {
             window.location.href = _ajaxLink + "frontend/index.html";
         })

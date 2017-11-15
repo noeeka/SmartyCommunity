@@ -177,6 +177,24 @@ class Location extends CI_Controller
 
     }
 
+    //编辑房间服务
+    function editRoom(){
+        $id = $this->input->post('id');
+        $building = $this->input->post('building');
+        $unit = $this->input->post('unit');
+        $room = $this->input->post('room');
+
+        $data = array(
+            'id' => $id,
+            'building' => $building,
+            'unit' => $unit,
+            'room' => $room
+        );
+        $this->db->where('id', $id);
+        $this->db->update('room', $data);
+        echo json_encode(array("state" => 1, "ret" => "success"));
+    }
+
     //删除房间服务
     function removeRoom(){
         $id = $this->input->post('id');
