@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <link rel="stylesheet" href="plugins/pace/pace.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,7 +33,7 @@
         <!-- Logo -->
         <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><b>i</b>LIFE</span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"></span>
         </a>
@@ -110,17 +111,6 @@
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" id="nav_search" placeholder="">
-                    <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                </div>
-            </form>
-            <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="active treeview">
@@ -147,20 +137,32 @@
                         <li><a href="building.html" data-lang="string_lang5"></a></li>
                         <li><a href="unit.html" data-lang="string_lang6"></a></li>
                         <li><a href="room.html" data-lang="string_lang7"></a></li>
+                    </ul>
+                </li>
 
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-desktop"></i>
+                        <span data-lang="string_lang33"></span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="outdoor.html" data-lang="string_lang34"></a></li>
+                        <li><a href="indoor.html" data-lang="string_lang35"></a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-laptop"></i>
+                        <i class="fa fa-gear"></i>
                         <span data-lang="string_lang8"></span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="pages/UI/general.html" data-lang="string_lang9"></a></li>
-
+                        <li><a href="restore.html" data-lang="string_lang9"></a></li>
                     </ul>
                 </li>
 
@@ -299,13 +301,18 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script src="bower_components/PACE/pace.min.js"></script>
 <script>
-
     $(function () {
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+            beforeSend: function () {
+                $(".content").hide()
+            },
+
             success: function (data) {
+                $(".content").show()
                 if (data.state == 1) {
                     $(".logo-lg").html(data.ret.project_name);
                     $(".hidden-xs").html(data.ret.username);
@@ -321,7 +328,7 @@
         $("#submit").click(function () {
             var isMobile = /^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
             var isPhone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-            var tel = $("#tel").val();
+            tel = $("#tel").val();
             if (!isMobile.test(tel) && !isPhone.test(tel)) {
                 $(".modal-body").html("<h2>" + $.i18n.map['string_error_tel'] + "</h2>");
                 $('body').append('<div class="modal-backdrop fade in"></div>');

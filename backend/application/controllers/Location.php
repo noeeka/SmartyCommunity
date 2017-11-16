@@ -87,7 +87,13 @@ class Location extends CI_Controller
     //获取单元列表服务
     function getUnits(){
         $this->lang->load('basic_info',get_cookie('lang'));
-        $result = $this->db->get('unity')->result();
+        $filter=$this->input->get("building");
+        if(!empty($filter)){
+            $result = $this->db->get_where('unity',array("building"=>$filter))->result();
+        }else{
+            $result = $this->db->get('unity')->result();
+        }
+
         foreach ($result as $k=>$v){
             $building_info = $this->db->get_where('building',array("id"=>$v->building))->row();
             $res[$k]['id']=$v->id;
@@ -148,6 +154,8 @@ class Location extends CI_Controller
 
     function getRooms(){
 
+        $filter_unit=$this->input->get("unit");
+        $filter_building=$this->input->get("building");
         $this->lang->load('basic_info',get_cookie('lang'));
         $rpp=$this->input->get('rpp');
         $page=$this->input->get('page');
@@ -162,7 +170,12 @@ class Location extends CI_Controller
             $page=$this->input->get('page');
         }
         $this->db->limit($rpp,($page-1)*$rpp);
-        $result = $this->db->get('room')->result();
+        if(empty($filter_building) && empty($filter_unit)){
+            $result = $this->db->get('room')->result();
+        }else{
+            $result = $this->db->get_where('room',array("building"=>$filter_building,"unit"=>$filter_unit))->result();
+        }
+
         foreach ($result as $k=>$v){
             $building_info = $this->db->get_where('building',array("id"=>$v->building))->row();
             $unit_info = $this->db->get_where('unity',array("id"=>$v->unit))->row();

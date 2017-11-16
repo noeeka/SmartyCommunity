@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-    <link rel="stylesheet" href="plugins/pace/pace.min.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -124,7 +124,7 @@
 
                     </ul>
                 </li>
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-building"></i>
                         <span data-lang="string_lang4"></span>
@@ -135,11 +135,11 @@
                     <ul class="treeview-menu">
                         <li><a href="building.html" data-lang="string_lang5"></a></li>
                         <li><a href="unit.html" data-lang="string_lang6"></a></li>
-                        <li class="active"><a href="room.html" data-lang="string_lang7"></a></li>
+                        <li><a href="room.html" data-lang="string_lang7"></a></li>
                     </ul>
                 </li>
 
-                <li class="treeview">
+                <li class="active treeview">
                     <a href="#">
                         <i class="fa fa-desktop"></i>
                         <span data-lang="string_lang33"></span>
@@ -148,7 +148,7 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="outdoor.html" data-lang="string_lang34"></a></li>
+                        <li class="active"><a href="outdoor.html" data-lang="string_lang34"></a></li>
                         <li><a href="indoor.html" data-lang="string_lang35"></a></li>
                     </ul>
                 </li>
@@ -157,8 +157,8 @@
                         <i class="fa fa-gear"></i>
                         <span data-lang="string_lang8"></span>
                         <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="restore.html" data-lang="string_lang9"></a></li>
@@ -174,7 +174,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <button type="button" class="btn btn-default" data-lang="string_lang27" id="addRoomBtn"></button>
+            <button type="button" class="btn btn-default" data-lang="string_lang32" id="addRoomBtn"></button>
             <div class="form-group pull-right" style="width: 30%">
                 <div class="input-group">
                     <span class="input-group-btn">
@@ -201,7 +201,7 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th data-lang="string_lang30"></th>
+                                    <th data-lang="string_lang36"></th>
                                     <th data-lang="string_lang25"></th>
                                     <th data-lang="string_lang23"></th>
                                     <th></th>
@@ -276,8 +276,21 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" id="data" class="form-control">
-                                <input type="hidden" id="dataId">
+                                <input type="text" id="sip" class="form-control" placeholder="">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="text" id="displayName" class="form-control">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="text" id="password" class="form-control">
+                                <input type="hidden" id="dataId" class="form-control">
+
                             </td>
                         </tr>
                     </table>
@@ -334,12 +347,13 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<link rel="stylesheet" href="plugins/pace/pace.min.css">
 <script data-pace-options='{"ajax": true }' src="bower_components/PACE/pace.min.js"></script>
+
 <script>
-    $(document).ajaxStart(function() {
-        Pace.start();
-    });
     $(function () {
+        (window.location.href.indexOf("#") > 0) ? page = window.location.href.split("#").pop() : page = 1;
+
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
@@ -485,13 +499,13 @@
                 var building = $("#showBuildings_filter").val();
                 $.ajax({
                     type: "GET",
-                    url: _ajaxLink + "backend/?c=location&m=getRooms",
+                    url: _ajaxLink + "backend/?c=device&m=getOutdoors",
                     data: {unit: unit, building: building},
                     success: function (data) {
                         if (data.state == 1) {
                             var innerStr = "";
                             $.each(data.ret, function (k, v) {
-                                innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                                innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-sip='" + v.sip + "' data-name='" + v.name + "' data-password='" + v.password + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.id + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
                             });
                             $("#rooms").html(innerStr);
@@ -547,18 +561,20 @@
             }
         });
 
-        ajaxPagination(1);
+        ajaxPagination(page);
 
         $("#submit").click(function () {
             if ($(this).attr("attr") == "editRoom") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=editRoom",
+                    url: _ajaxLink + "backend/?c=device&m=editOutdoor",
                     data: {
                         id: $("#dataId").val(),
                         building: $("#showBuildings").val(),
                         unit: $("#showUnits").val(),
-                        room: $("#data").val()
+                        sip: $("#sip").val(),
+                        name: $("#displayName").val(),
+                        password: $("#password").val()
                     },
                     success: function (data) {
                         if (data.state == 1) {
@@ -572,7 +588,7 @@
             } else if ($(this).attr("attr") == "removeRoom") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=removeRoom",
+                    url: _ajaxLink + "backend/?c=device&m=removeOutdoor",
                     data: {id: $(this).attr("data-id")},
                     success: function (data) {
                         if (data.state == 1) {
@@ -586,8 +602,14 @@
             } else if ($(this).attr("attr") == "addRoom") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=addRoom",
-                    data: {building: $("#showBuildings").val(), unit: $("#showUnits").val(), room: $("#data").val()},
+                    url: _ajaxLink + "backend/?c=device&m=addOutdoor",
+                    data: {
+                        building: $("#showBuildings").val(),
+                        unit: $("#showUnits").val(),
+                        sip: $("#sip").val(),
+                        name: $("#displayName").val(),
+                        password: $("#password").val()
+                    },
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -598,61 +620,15 @@
                     dataType: "json"
                 })
             }
-
-            /*
-            if ($(this).attr("attr") == "edit" && $(this).attr("data-target")=="outdoor") {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=editOutdoor",
-                    data: {id: $("#unitId").val(), building: $("#showBuildings").val(), unit: $("#unit").val()},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else if ($(this).attr("attr") == "remove") {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=removeRoom",
-                    data: {id: $(this).attr("data-id")},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=addRoom",
-                    data: {building: $("#showBuildings").val(), unit: $("#showUnits").val(), room: $("#room").val()},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            }
-
-            */
-
         });
 
         $(document).on("click", ".fa-edit", function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
-            $("#data").val($(this).attr("data"))
+            $("#sip").val($(this).attr("data-sip"))
             $("#dataId").val($(this).attr("data-id"))
+            $("#displayName").val($(this).attr("data-name"))
+            $("#password").val($(this).attr("data-password"))
             $("#showBuildings").val($(this).attr("building"));
             $("#showUnits").val($(this).attr("unit"));
             //$("#showBuildings").val()
@@ -663,10 +639,9 @@
 
         $(document).on("click", ".fa-trash", function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
-            //$("#modal-default").addClass("modal-danger");
             $("#modal-default").addClass("in");
-            $(".modal-title").html("");
-            $(".modal-body").html($(this).attr("confirm"))
+            $(".modal-title").html($.i18n.map['string_exteme_danger']);
+            $(".modal-body").html('<h2>'+$.i18n.map['string_confirm_remove']+'</h2>')
             $("#submit").attr("data-id", $(this).attr("data-id"))
             $("#submit").attr("attr", "removeRoom")
             $("#submit").addClass("btn-danger")
@@ -683,13 +658,13 @@
     function ajaxPagination(page) {
         $.ajax({
             type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getRooms",
+            url: _ajaxLink + "backend/?c=device&m=getOutdoors",
             data: {rpp: rpp, page: page},
             success: function (data) {
                 if (data.state == 1) {
                     var innerStr = "";
                     $.each(data.ret, function (k, v) {
-                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                        innerStr = innerStr + "<tr><td>" + v.sip + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-sip='" + v.sip + "' data-name='" + v.name + "' data-password='" + v.password + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.sip + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
                     });
                     $("#rooms").html(innerStr);
@@ -752,7 +727,7 @@
                 if (data.state == 1) {
                     var innerStr = "";
                     $.each(data.ret, function (k, v) {
-                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-sip='" + v.sip + "' data-name='" + v.name + "' data-password='" + v.password + "'  data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.sip + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
                     });
                     $("#rooms").html(innerStr);
@@ -826,6 +801,9 @@
                     }
                     document.title = $.i18n.map['string_title'];
                     $('#nav_search').attr("placeholder", $.i18n.map['string_nav_search']);
+                    $('#sip').attr("placeholder", $.i18n.map['string_sip_placeholder']);
+                    $('#displayName').attr("placeholder", $.i18n.map['string_display_placeholder']);
+                    $('#password').attr("placeholder", $.i18n.map['string_password_placeholder']);
 
                 }
             });

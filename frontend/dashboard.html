@@ -23,7 +23,8 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
@@ -110,17 +111,6 @@
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" id="nav_search" placeholder="">
-                    <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                </div>
-            </form>
-            <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="active treeview">
@@ -137,7 +127,7 @@
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-pie-chart"></i>
+                        <i class="fa fa-building"></i>
                         <span data-lang="string_lang4"></span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -147,20 +137,32 @@
                         <li><a href="building.html" data-lang="string_lang5"></a></li>
                         <li><a href="unit.html" data-lang="string_lang6"></a></li>
                         <li><a href="room.html" data-lang="string_lang7"></a></li>
+                    </ul>
+                </li>
 
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-desktop"></i>
+                        <span data-lang="string_lang33"></span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="outdoor.html" data-lang="string_lang34"></a></li>
+                        <li><a href="indoor.html" data-lang="string_lang35"></a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-laptop"></i>
+                        <i class="fa fa-gear"></i>
                         <span data-lang="string_lang8"></span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="pages/UI/general.html" data-lang="string_lang9"></a></li>
-
+                        <li><a href="restore.html" data-lang="string_lang9"></a></li>
                     </ul>
                 </li>
 
@@ -285,9 +287,11 @@
                             <!-- tools box -->
                             <div class="pull-right box-tools">
                                 <!-- button with a dropdown -->
-                                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
                                 </button>
-                                <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
+                                <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i
+                                        class="fa fa-times"></i>
                                 </button>
                             </div>
                             <!-- /. tools -->
@@ -401,7 +405,7 @@
                         $('[data-lang="' + i + '"]').text($.i18n.map[i]);
                     }
                     document.title = $.i18n.map['string_title'];
-                    $('#nav_search').attr("placeholder",$.i18n.map['string_nav_search']);
+                    $('#nav_search').attr("placeholder", $.i18n.map['string_nav_search']);
                 }
             });
         }
