@@ -178,9 +178,23 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1 data-lang="string_data_import">
-                Dashboard
-                <small>Control panel</small>
+
             </h1>
+
+<hr>
+            <span class="btn btn-success fileinput-button">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>Add files...</span>
+                                        <input id="fileupload" type="file" name="files[]" accept=".xls">
+                                    </span>
+
+
+            <div class="form-group pull-right">
+
+                <button type="button" class="btn btn-danger" data-lang="string_lang105" id="addRoomBtn"
+                        style="display: none;"></button>
+
+            </div>
 
         </section>
 
@@ -191,21 +205,29 @@
                 <!-- ./col -->
                 <div class="col-xs-12">
                     <!-- general form elements -->
-                    <div class="box box-primary">
+                    <div class="box" style="display: none">
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <span class="btn btn-success fileinput-button">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                        <span>Add files...</span>
-                                        <input id="fileupload" type="file" name="files[]" accept=".xls">
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                        </form>
+                        <div class="box-body">
+                            <table id="layoutit" style="display: none;width: 100%">
+                                <tr class="bg-aqua">
+                                    <td colspan="2" align="center"><h3 data-lang="string_lang102"></h3></td>
+                                </tr>
+                                <tr valign="top">
+                                    <td>
+                                        <table id="olds_tb" class="table table-bordered table-hover"
+                                               align="center"></table>
+                                    </td>
+                                    <td>
+                                        <table id="news_tb" class="table table-bordered table-hover"
+                                               align="center"></table>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                        <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
@@ -233,13 +255,13 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" data-lang="string_lang106">Default Modal</h4>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <p><input type="text" id="password" class="form-control"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline" id="submit-btn" data-dismiss="modal"
-                        data-lang="string_lang101">Save
+                <button type="button" class="btn btn-outline" id="submit-btn" data-dismiss="modal" data-lang="string_lang101">Save
                     changes
                 </button>
             </div>
@@ -321,21 +343,7 @@
             },
             dataType: "json"
         })
-        $("#submit").click(function () {
-            var isMobile = /^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
-            var isPhone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-            tel = $("#tel").val();
-            if (!isMobile.test(tel) && !isPhone.test(tel)) {
-                $(".modal-body").html("<h2>" + $.i18n.map['string_error_tel'] + "</h2>");
-                $('body').append('<div class="modal-backdrop fade in"></div>');
-                $("#modal-warning").addClass("in");
-                $("#modal-warning").show();
-                $("[data-dismiss|='modal']").attr("attr", "message")
-                return false;
-            }
-
-
-            $(".modal-body").html("<h2>" + $.i18n.map['string_confirm_message'] + "</h2>");
+        $("#addRoomBtn").click(function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-warning").addClass("in");
             $("#modal-warning").show();
@@ -411,14 +419,56 @@
         })
 
         $('#fileupload').fileupload({
-            url: _ajaxLink + "backend/?c=file&m=getExcelContens",
+            url: _ajaxLink + "backend/?c=file&m=getExcelContents",
             dataType: 'json',
             acceptFileTypes: /(\.|\/)(xls)$/i,
 
             done: function (e, data) {
-                $.each(data.result.files, function (index, file) {
-                    $('<p/>').text(file.name).appendTo('#files');
-                });
+                if (data.result.state == 1) {
+                    $("#layoutit").show();
+                    var olds = data.result.ret.old_data;
+                    var news = data.result.ret.new_data;
+                    inner_olds = "<tr><td colspan='3' align='center' class='bg-yellow-gradient'>" + $.i18n.map['string_lang103'] + "</td></tr><tr><td>" + $.i18n.map['string_lang23'] + "</td><td>" + $.i18n.map['string_lang25'] + "</td><td>" + $.i18n.map['string_lang30'] + "</td></tr>";
+                    inner_news = "<tr><td colspan='3' align='center' class='bg-red-gradient'>" + $.i18n.map['string_lang104'] + "</td></tr><tr><td>" + $.i18n.map['string_lang23'] + "</td><td>" + $.i18n.map['string_lang25'] + "</td><td>" + $.i18n.map['string_lang30'] + "</td></tr>";
+
+                    $.each(olds, function (k, v) {
+                        inner_olds = inner_olds + "<tr><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+                    })
+
+                    $.each(news, function (k, v) {
+                        inner_news = inner_news + "<tr><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+                    })
+                    $(".box").show();
+                    $("#olds_tb").html(inner_olds);
+                    $("#news_tb").html(inner_news);
+                    $("#addRoomBtn").show();
+
+
+                    /*
+                    if (news.length < olds.length) {
+
+                        $.each(olds, function (k, v) {
+                            inner_olds = inner_olds + "<tr><td>" + v[0] + "</td><td>" + v[1] + "</td><td>" + v[2] + "</td></tr>"
+                            inner_news = inner_news + "<tr><td>" + news[0] + "</td><td>" + news[1] + "</td><td>" + news[2] + "</td></tr>"
+                        })
+                    } else {
+
+                        $.each(news, function (k, v) {
+var obj=olds[k];
+                           inner_olds = inner_olds + "<tr><td>" + obj.building + "</td><td>" + obj.unit + "</td><td>" + obj.room + "</td></tr>"
+                            inner_news = inner_news + "<tr><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+                        })
+                    }
+
+                    $("#olds_tb").html(inner_olds);
+                    $("#news_tb").html(inner_news);
+                    */
+                } else if (data.result.ret == "file_format_error") {
+
+                } else {
+
+                }
+
             },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);

@@ -14,51 +14,63 @@ class File extends CI_Controller
         parent::__construct();
     }
 
-    public function getExcelContens(){
+    public function getExcelContents()
+    {
+        set_time_limit(0);
+        header("Content-type: text/html; charset=utf-8");
         $this->load->library('UploadHandler');
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
-        $options=array('upload_dir'=>'/temp');
+        $options = array('upload_dir' => '/temp');
         $upload_handler = new UploadHandler($options);
-        $reponse=$upload_handler->response;
-        //print_r($reponse['files'][0]->name);
-        //print_r($_SERVER['DOCUMENT_ROOT']);
-        $objPHPExcel = new IOFactory();
-        //$objPHPExcel->getProperties();
-        $filePath = $_SERVER['DOCUMENT_ROOT'].'/backend/temp/'.$reponse['files'][0]->name;
-        $readerType = $objPHPExcel::identify($filePath);
-        $objReader = $objPHPExcel::createReader($readerType);
-        // 读文件
-        $objPHPExcel = $objReader->load($filePath);
+        $reponse = $upload_handler->response;
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/backend/temp/' . $reponse['files'][0]->name;
 
 
         $reader = new PHPExcel_Reader_Excel5();
         $excel = $reader->load($filePath); //excel的路径
-        $data=$excel->getActiveSheet()->toArray();
+        $data = $excel->getActiveSheet()->toArray();
 
-        $objWorksheet = $objPHPExcel->getActiveSheet(0);
-        print_r($objWorksheet);
-        die;
-        // 总行数
-        $highestRow = $objWorksheet->getHighestRow();
-        // 总列数
-        $highestColumn = $objWorksheet->getHighestColumn();
-
-        $highestColumnIndex = range('A', $highestColumn);
-        $data = array();
-        // 从第二行开始，第一行一般是表头
-        for ($row = 0; $row <= $highestRow; $row++) {
-            $array = array();
-            foreach ($highestColumnIndex as $value) {
-                //print_r($value);
-                $address = $value . $row;
-                echo $address."<br>";
-                $array[] = $objWorksheet->getCell($address)->getFormattedValue();
-            }
-            array_push($data, $array);
+        $res = array();
+        $result = array();
+        $res_ori = array();
+        if (empty($data[2][3])) {
+            unlink($filePath);
+            json_encode(array("state" => 0, "ret" => "file_format_error"));
+            die;
         }
-        //return $data;
-        print_r($data);
+        //去掉数组前两个（根据大高欣的格式再订）
+        for ($i = 2; $i < count($data); $i++) {
+            if (strstr($data[$i][3], "主机")) {
+                array_push($res, $data[$i]);
+            }
+        }
+        foreach ($res as $key => $value) {
+            $result[$key]['building'] = $value[0];
+            $result[$key]['unit'] = $value[1];
+            $result[$key]['room'] = $value[2];
+        }
+        if (!empty($result)) {
+            unlink($filePath);
+        } else {
+            json_encode(array("state" => 0, "ret" => "retry"));
+            die;
+        }
+
+
+        //获取原有数据库数据
+        $result_ori = $this->db->get('room')->result();
+        foreach ($result_ori as $k => $v) {
+            $building_info = $this->db->get_where('building', array("id" => $v->building))->row();
+            $unit_info = $this->db->get_where('unity', array("id" => $v->unit))->row();
+            $res_ori[$k]['building'] = $building_info->building;
+            $res_ori[$k]['unit'] = $unit_info->unit;
+            $res_ori[$k]['room'] = $v->room;
+        }
+
+
+        echo json_encode(array("state" => 1, "ret" => array("new_data" => $result, "old_data" => $res_ori)));
+        die;
 
     }
 
