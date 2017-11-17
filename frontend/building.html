@@ -200,6 +200,22 @@
 
                                 </tfoot>
                             </table>
+
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li>
+                                        <a href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -292,6 +308,9 @@
 <script>
 
     $(function () {
+        (window.location.href.indexOf("#") > 0) ? page = window.location.href.split("#").pop() : page = 1;
+
+        ajaxPagination(page);
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
@@ -325,24 +344,7 @@
         })
 
 
-        $.ajax({
-            type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getBuildings",
-            success: function (data) {
-                if (data.state == 1) {
-                    $.each(data.ret, function (k, v) {
-                        $("#buildings").append("<tr><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.building + "' data-id='" + v.id + "' \n" +
-                            " data-lang='string_lang23'>\n" +
-                            "\n" +
-                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='"+data.confirm+"' data-id='" + v.id + "'\n"+">\n" +"</button></div></td></tr>");
 
-                    });
-                } else {
-                    alert("API error");
-                }
-            },
-            dataType: "json"
-        })
 
         $("#submit").click(function () {
             if ($(this).attr("attr") == "edit") {
@@ -420,6 +422,73 @@
         })
     })
 
+
+
+    function ajaxPagination(page) {
+        $.ajax({
+            type: "GET",
+            url: _ajaxLink + "backend/?c=location&m=getBuildings",
+            data: {rpp: rpp, page: page},
+            success: function (data) {
+                if (data.state == 1) {
+                    var innerStr = "";
+                    $.each(data.ret, function (k, v) {
+                        innerStr = innerStr + "<tr><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.building + "' data-id='" + v.id + "' \n" +
+                            " data-lang='string_lang23'>\n" +
+                            "\n" +
+                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='"+data.confirm+"' data-id='" + v.id + "'\n"+">\n" +"</button></div></td></tr>"
+
+                    });
+                    $("#buildings").html(innerStr);
+                    if (data.total > rpp) {
+                        var page_num = Math.ceil(data.total / rpp)
+
+                        pagination_left = '<li><a href="#1" aria-label="Previous" onclick="ajaxPagination(1)"><span aria-hidden="true">«</span></a></li>';
+                        pagination = '';
+                        var pageIndex = parseInt(window.location.href.split("#").pop());
+                        pageIndex = pageIndex ? pageIndex : 1;
+                        pageFirst = pageIndex - 4;
+                        var pageCount = 0;
+                        for (i = pageIndex - 4; i <= page_num; i++) {
+                            if (i <= 0) {
+                                continue;
+                            }
+                            if (pageFirst <= 0) {
+                                pageFirst = i;
+                            }
+                            if (pageCount >= 9) {
+                                break;
+                            }
+                            if (pageIndex == i) {
+                                pagination += '<li class="active"><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
+                            } else {
+                                pagination += '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>';
+                            }
+                            ++pageCount;
+                        }
+                        for (i = pageFirst - 1; i > 0; --i) {
+                            if (pageCount >= 9) {
+                                break;
+                            }
+                            pagination = '<li><a href="#' + i + '" onclick="ajaxPagination(' + i + ')">' + i + '</a></li>' + pagination;
+                            ++pageCount;
+                        }
+                        pagination += '<li><a href="#' + page_num + '" onclick="ajaxPagination(' + page_num + ')">&raquo;</a></li>';
+                        pagination = pagination_left + pagination;
+                        $(".pagination").html(pagination);
+
+                    } else {
+                        $(".pagination").html("");
+                    }
+
+
+                } else {
+                    alert("API error");
+                }
+            },
+            dataType: "json"
+        })
+    }
 </script>
 <script>
     if ($.cookie('lang') == "english") {

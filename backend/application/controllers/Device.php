@@ -54,7 +54,11 @@ class Device extends CI_Controller
         $this->db->limit($rpp,($page-1)*$rpp);
         if(empty($filter_building) && empty($filter_unit)){
             $result = $this->db->get('outdoor')->result();
+            $total=$this->db->count_all_results('outdoor');
         }else{
+            $this->db->where('building', $filter_building);
+            $this->db->where('unit', $filter_unit);
+            $total=$this->db->count_all_results('outdoor');
             $result = $this->db->get_where('outdoor',array("building"=>$filter_building,"unit"=>$filter_unit))->result();
         }
 
@@ -70,7 +74,7 @@ class Device extends CI_Controller
             $res[$k]['name']=$v->name;
             $res[$k]['password']=$v->password;
         }
-        echo json_encode(array("state" => 1, "ret" => $res,"confirm"=>$this->lang->line('building_remove_confirm'),"total"=>$this->db->count_all_results('outdoor')));
+        echo json_encode(array("state" => 1, "ret" => $res,"confirm"=>$this->lang->line('building_remove_confirm'),"total"=>$total));
 
     }
 

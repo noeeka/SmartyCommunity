@@ -41,12 +41,26 @@ class Location extends CI_Controller
         }
     }
 
-    //获取栋列表
+    //获取楼栋子列表
     public function getBuildings()
     {
-        $this->lang->load('basic_info',get_cookie('lang'));
+
+        $rpp = $this->input->get('rpp');
+        $page = $this->input->get('page');
+        if (empty($rpp)) {
+            $rpp = 20;
+        } else {
+            $rpp = $this->input->get('rpp');
+        }
+        if (empty($page)) {
+            $page = 1;
+        } else {
+            $page = $this->input->get('page');
+        }
+        $this->db->limit($rpp, ($page - 1) * $rpp);
+        $this->lang->load('basic_info', get_cookie('lang'));
         $result = $this->db->get('building')->result();
-        echo json_encode(array("state" => 1, "ret" => $result,"confirm"=>$this->lang->line('building_remove_confirm')));
+        echo json_encode(array("state" => 1, "ret" => $result, "confirm" => $this->lang->line('building_remove_confirm'),"total" => $this->db->count_all_results('building')));
     }
 
     //编辑楼栋信息、
@@ -63,14 +77,18 @@ class Location extends CI_Controller
         $this->db->update('building', $data);
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
+
     //删除楼栋单元信息
-    function removeBuilding(){
+    function removeBuilding()
+    {
         $id = $this->input->post('id');
         $this->db->delete('building', array('id' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
+
     //添加单元信息
-    function addUnit(){
+    function addUnit()
+    {
         $building = $this->input->post("building");
         $unit = $this->input->post("unit");
         $data = array(
@@ -85,28 +103,45 @@ class Location extends CI_Controller
     }
 
     //获取单元列表服务
-    function getUnits(){
-        $this->lang->load('basic_info',get_cookie('lang'));
-        $filter=$this->input->get("building");
-        if(!empty($filter)){
-            $result = $this->db->get_where('unity',array("building"=>$filter))->result();
-        }else{
+    function getUnits()
+    {
+        $filter = $this->input->get("building");
+        $rpp = $this->input->get('rpp');
+        $page = $this->input->get('page');
+        if (empty($rpp)) {
+            $rpp = 20;
+        } else {
+            $rpp = $this->input->get('rpp');
+        }
+        if (empty($page)) {
+            $page = 1;
+        } else {
+            $page = $this->input->get('page');
+        }
+        $this->db->limit($rpp, ($page - 1) * $rpp);
+        $this->lang->load('basic_info', get_cookie('lang'));
+        if (!empty($filter)) {
+            $result = $this->db->get_where('unity', array("building" => $filter))->result();
+            $this->db->where('building', $filter);
+            $total=$this->db->count_all_results('unity');
+        } else {
             $result = $this->db->get('unity')->result();
+            $total=$this->db->count_all_results('unity');
         }
-
-        foreach ($result as $k=>$v){
-            $building_info = $this->db->get_where('building',array("id"=>$v->building))->row();
-            $res[$k]['id']=$v->id;
-            $res[$k]['unit']=$v->unit;
-            $res[$k]['buildingId']=$building_info->id;
-            $res[$k]['building']=$building_info->building;
+        foreach ($result as $k => $v) {
+            $building_info = $this->db->get_where('building', array("id" => $v->building))->row();
+            $res[$k]['id'] = $v->id;
+            $res[$k]['unit'] = $v->unit;
+            $res[$k]['buildingId'] = $building_info->id;
+            $res[$k]['building'] = $building_info->building;
         }
-        echo json_encode(array("state" => 1, "ret" => $res,"confirm"=>$this->lang->line('building_remove_confirm')));
+        echo json_encode(array("state" => 1, "ret" => $res, "confirm" => $this->lang->line('building_remove_confirm'),"total"=>$total));
 
     }
 
     //编辑单元信息服务
-    function editUnit(){
+    function editUnit()
+    {
         $id = $this->input->post('id');
         $building = $this->input->post('building');
         $unit = $this->input->post('unit');
@@ -122,22 +157,25 @@ class Location extends CI_Controller
     }
 
     //删除单元信息服务
-    function removeUnit(){
+    function removeUnit()
+    {
         $id = $this->input->post('id');
         $this->db->delete('unity', array('id' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
 
     //根据楼栋获取单元服务
-    function getUnitsByBuilding(){
-        $building=$this->input->get("building");
-        $this->lang->load('basic_info',get_cookie('lang'));
-        $result = $this->db->get_where('unity',array("building"=>$building))->result();
-        echo json_encode(array("state" => 1, "ret" => $result,"confirm"=>$this->lang->line('building_remove_confirm')));
+    function getUnitsByBuilding()
+    {
+        $building = $this->input->get("building");
+        $this->lang->load('basic_info', get_cookie('lang'));
+        $result = $this->db->get_where('unity', array("building" => $building))->result();
+        echo json_encode(array("state" => 1, "ret" => $result, "confirm" => $this->lang->line('building_remove_confirm')));
     }
 
     //添加房间服务
-    function addRoom(){
+    function addRoom()
+    {
         $building = $this->input->post("building");
         $unit = $this->input->post("unit");
         $room = $this->input->post("room");
@@ -152,46 +190,52 @@ class Location extends CI_Controller
         }
     }
 
-    function getRooms(){
+    function getRooms()
+    {
 
-        $filter_unit=$this->input->get("unit");
-        $filter_building=$this->input->get("building");
-        $this->lang->load('basic_info',get_cookie('lang'));
-        $rpp=$this->input->get('rpp');
-        $page=$this->input->get('page');
-        if(empty($rpp)){
-            $rpp=20;
-        }else{
-            $rpp=$this->input->get('rpp');
+        $filter_unit = $this->input->get("unit");
+        $filter_building = $this->input->get("building");
+        $this->lang->load('basic_info', get_cookie('lang'));
+        $rpp = $this->input->get('rpp');
+        $page = $this->input->get('page');
+        if (empty($rpp)) {
+            $rpp = 20;
+        } else {
+            $rpp = $this->input->get('rpp');
         }
-        if(empty($page)){
-            $page=1;
-        }else{
-            $page=$this->input->get('page');
+        if (empty($page)) {
+            $page = 1;
+        } else {
+            $page = $this->input->get('page');
         }
-        $this->db->limit($rpp,($page-1)*$rpp);
-        if(empty($filter_building) && empty($filter_unit)){
+        $this->db->limit($rpp, ($page - 1) * $rpp);
+        if (empty($filter_building) && empty($filter_unit)) {
             $result = $this->db->get('room')->result();
-        }else{
-            $result = $this->db->get_where('room',array("building"=>$filter_building,"unit"=>$filter_unit))->result();
+            $total=$this->db->count_all_results('room');
+        } else {
+            $result = $this->db->get_where('room', array("building" => $filter_building, "unit" => $filter_unit))->result();
+            $this->db->where('building', $filter_building);
+            $this->db->where('unit', $filter_unit);
+            $total=$this->db->count_all_results('room');
         }
 
-        foreach ($result as $k=>$v){
-            $building_info = $this->db->get_where('building',array("id"=>$v->building))->row();
-            $unit_info = $this->db->get_where('unity',array("id"=>$v->unit))->row();
-            $res[$k]['id']=$v->id;
-            $res[$k]['unitId']=$v->unit;
-            $res[$k]['buildingId']=$building_info->id;
-            $res[$k]['building']=$building_info->building;
-            $res[$k]['unit']=$unit_info->unit;
-            $res[$k]['room']=$v->room;
+        foreach ($result as $k => $v) {
+            $building_info = $this->db->get_where('building', array("id" => $v->building))->row();
+            $unit_info = $this->db->get_where('unity', array("id" => $v->unit))->row();
+            $res[$k]['id'] = $v->id;
+            $res[$k]['unitId'] = $v->unit;
+            $res[$k]['buildingId'] = $building_info->id;
+            $res[$k]['building'] = $building_info->building;
+            $res[$k]['unit'] = $unit_info->unit;
+            $res[$k]['room'] = $v->room;
         }
-        echo json_encode(array("state" => 1, "ret" => $res,"confirm"=>$this->lang->line('building_remove_confirm'),"total"=>$this->db->count_all_results('room')));
+        echo json_encode(array("state" => 1, "ret" => $res, "confirm" => $this->lang->line('building_remove_confirm'), "total" => $total));
 
     }
 
     //编辑房间服务
-    function editRoom(){
+    function editRoom()
+    {
         $id = $this->input->post('id');
         $building = $this->input->post('building');
         $unit = $this->input->post('unit');
@@ -209,7 +253,8 @@ class Location extends CI_Controller
     }
 
     //删除房间服务
-    function removeRoom(){
+    function removeRoom()
+    {
         $id = $this->input->post('id');
         $this->db->delete('room', array('id' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));

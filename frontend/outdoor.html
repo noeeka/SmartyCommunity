@@ -353,7 +353,7 @@
 <script>
     $(function () {
         (window.location.href.indexOf("#") > 0) ? page = window.location.href.split("#").pop() : page = 1;
-
+        ajaxPagination(page)
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
@@ -500,12 +500,12 @@
                 $.ajax({
                     type: "GET",
                     url: _ajaxLink + "backend/?c=device&m=getOutdoors",
-                    data: {unit: unit, building: building},
+                    data: {unit: unit, building: building,rpp:rpp},
                     success: function (data) {
                         if (data.state == 1) {
                             var innerStr = "";
                             $.each(data.ret, function (k, v) {
-                                innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-sip='" + v.sip + "' data-name='" + v.name + "' data-password='" + v.password + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.id + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                                innerStr = innerStr + "<tr><td>" + v.sip + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-sip='" + v.sip + "' data-name='" + v.name + "' data-password='" + v.password + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.id + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
 
                             });
                             $("#rooms").html(innerStr);
@@ -561,7 +561,6 @@
             }
         });
 
-        ajaxPagination(page);
 
         $("#submit").click(function () {
             if ($(this).attr("attr") == "editRoom") {

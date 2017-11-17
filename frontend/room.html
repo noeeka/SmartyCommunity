@@ -486,7 +486,7 @@
                 $.ajax({
                     type: "GET",
                     url: _ajaxLink + "backend/?c=location&m=getRooms",
-                    data: {unit: unit, building: building},
+                    data: {unit: unit, building: building,rpp:rpp},
                     success: function (data) {
                         if (data.state == 1) {
                             var innerStr = "";
