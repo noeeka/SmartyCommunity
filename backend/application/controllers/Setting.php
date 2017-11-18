@@ -72,7 +72,7 @@ class Setting extends CI_Controller
                 }
                 $result[$key]=$res_unit;
             }
-            
+
             foreach ($result as $building_key=>$building_value){
                 $data = array(
                     'building' => $building_key

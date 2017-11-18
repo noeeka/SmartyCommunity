@@ -28,6 +28,7 @@
 </head>
 <body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
+
     <header class="main-header">
         <!-- Logo -->
         <a href="#" class="logo">
@@ -124,7 +125,7 @@
 
                     </ul>
                 </li>
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-building"></i>
                         <span data-lang="string_lang4"></span>
@@ -135,7 +136,7 @@
                     <ul class="treeview-menu">
                         <li><a href="building.html" data-lang="string_lang5"></a></li>
                         <li><a href="unit.html" data-lang="string_lang6"></a></li>
-                        <li class="active"><a href="room.html" data-lang="string_lang7"></a></li>
+                        <li><a href="room.html" data-lang="string_lang7"></a></li>
                     </ul>
                 </li>
 
@@ -152,7 +153,7 @@
                         <li><a href="indoor.html" data-lang="string_lang35"></a></li>
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class="active treeview">
                     <a href="#">
                         <i class="fa fa-gear"></i>
                         <span data-lang="string_lang8"></span>
@@ -162,7 +163,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="restore.html" data-lang="string_lang9"></a></li>
-                        <li><a href="admin.html" data-lang="string_lang37"></a></li>
+                        <li class="active"><a href="admin.html" data-lang="string_lang37"></a></li>
                     </ul>
                 </li>
 
@@ -175,22 +176,12 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <button type="button" class="btn btn-default" data-lang="string_lang27" id="addRoomBtn"></button>
-            <div class="form-group pull-right" style="width: 30%">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <select id="showBuildings_filter" class="form-control">
-                            <option data-lang="string_lang24">请选择楼栋号</option>
-                        </select>
-                    </span>
-                    <span class="input-group-btn">
-                        <select id="showUnits_filter" class="form-control">
-                            <option data-lang="string_lang29">请选择单元号</option>
-                        </select>
-                    </span>
-                </div>
-            </div>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"
+                    data-lang="string_lang40" id="addBuildingBtn">
+            </button>
         </section>
+
+
         <!-- Main content -->
         <section class="content">
             <!-- Small boxes (Stat box) -->
@@ -202,16 +193,16 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th data-lang="string_lang30"></th>
-                                    <th data-lang="string_lang25"></th>
-                                    <th data-lang="string_lang23"></th>
+                                    <th data-lang="string_lang38"></th>
+                                    <th data-lang="string_lang39"></th>
                                     <th></th>
                                 </tr>
                                 </thead>
-                                <tbody id="rooms">
+                                <tbody id="buildings">
 
                                 </tfoot>
                             </table>
+
 
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
@@ -257,31 +248,27 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" data-lang="string_lang30">Default Modal</h4>
+                    <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
+
                     <table class="table">
                         <tr>
                             <td>
-                                <select id="showBuildings" class="form-control">
-                                    <option data-lang="string_lang24">请选择语言</option>
-                                </select>
+                                <input type="text" id="username" class="form-control">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <select id="showUnits" class="form-control">
-                                    <option data-lang="string_lang29">请选择语言</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" id="data" class="form-control">
-                                <input type="hidden" id="dataId">
+                                <input type="text" id="password" class="form-control">
+                                <input type="hidden" id="userid">
                             </td>
                         </tr>
                     </table>
+
+
+
+
                 </div>
                 <div class="modal-footer">
 
@@ -335,12 +322,13 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<script data-pace-options='{"ajax": true }' src="bower_components/PACE/pace.min.js"></script>
+<script src="bower_components/PACE/pace.min.js"></script>
 <script>
-    $(document).ajaxStart(function() {
-        Pace.start();
-    });
+
     $(function () {
+        (window.location.href.indexOf("#") > 0) ? page = window.location.href.split("#").pop() : page = 1;
+
+        ajaxPagination(page);
         $.ajax({
             type: "GET",
             url: _ajaxLink + "backend/?c=setting&m=systemSetting",
@@ -358,209 +346,18 @@
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
             //$("#building").val($(this).attr("data"))
-            $.ajax({
-                type: "GET",
-                url: _ajaxLink + "backend/?c=location&m=getBuilding",
-                success: function (data) {
-                    if (data.state == 1) {
-                        $("#building").val(data.ret);
-                    } else {
-                        alert("API error");
-                    }
-                },
-                dataType: "json"
-            })
             $("#modal-default").show();
         })
 
 
-        $.ajax({
-            type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getBuildings",
-            success: function (data) {
-                if (data.state == 1) {
-                    $.each(data.ret, function (k, v) {
-                        $("#showBuildings").append("<option value='" + v.id + "'>" + v.building + "</option>");
 
-                    });
-                } else {
-                    alert("API error");
-                }
-            },
-            dataType: "json"
-        })
-
-        $.ajax({
-            type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getBuildings",
-            success: function (data) {
-                if (data.state == 1) {
-                    $.each(data.ret, function (k, v) {
-                        $("#showBuildings_filter").append("<option value='" + v.id + "'>" + v.building + "</option>");
-
-                    });
-                } else {
-                    alert("API error");
-                }
-            },
-            dataType: "json"
-        })
-
-        $.ajax({
-            type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getUnits",
-            success: function (data) {
-                if (data.state == 1) {
-                    $.each(data.ret, function (k, v) {
-                        $("#showUnits").append("<option value='" + v.id + "'>" + v.unit + "</option>");
-
-                    });
-                } else {
-                    alert("API error");
-                }
-            },
-            dataType: "json"
-        })
-
-
-        $('#showBuildings').on('change', function () {
-            if ($(this).val()) {
-                var building = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: _ajaxLink + "backend/?c=location&m=getUnitsByBuilding",
-                    data: {building: building},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            $("#showUnits").html("");
-                            $.each(data.ret, function (k, v) {
-                                $("#showUnits").append("<option value='" + v.id + "'>" + v.unit + "</option>");
-                            });
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else {
-
-            }
-        });
-
-        $('#showBuildings_filter').on('change', function () {
-            if ($(this).val()) {
-                var building = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: _ajaxLink + "backend/?c=location&m=getUnitsByBuilding",
-                    data: {building: building},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            if (data.ret.length == 1) {
-                                $("#showUnits_filter").html("");
-                                $.each(data.ret, function (k, v) {
-                                    $("#showUnits_filter").append("<option value='" + v.id + "'>" + v.unit + "</option>");
-
-                                });
-                                ajaxPaginationFilter(1, data.ret.building, data.ret.unit)
-                            } else {
-                                $("#showUnits_filter").html("");
-                                $.each(data.ret, function (k, v) {
-                                    $("#showUnits_filter").append("<option value='" + v.id + "'>" + v.unit + "</option>");
-                                });
-                            }
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else {
-
-            }
-        });
-
-        $('#showUnits_filter').on('change', function () {
-            if ($(this).val()) {
-                var unit = $(this).val();
-                var building = $("#showBuildings_filter").val();
-                $.ajax({
-                    type: "GET",
-                    url: _ajaxLink + "backend/?c=location&m=getRooms",
-                    data: {unit: unit, building: building,rpp:rpp},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            var innerStr = "";
-                            $.each(data.ret, function (k, v) {
-                                innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
-
-                            });
-                            $("#rooms").html(innerStr);
-                            if (data.total > rpp) {
-                                var page_num = Math.ceil(data.total / rpp)
-                                pagination_left = '<li><a href="#1" aria-label="Previous" onclick="ajaxPaginationFilter(1)"><span aria-hidden="true">«</span></a></li>';
-                                pagination = '';
-                                var pageIndex = parseInt(window.location.href.split("#").pop());
-                                pageIndex = pageIndex ? pageIndex : 1;
-                                pageFirst = pageIndex - 4;
-                                var pageCount = 0;
-                                for (i = pageIndex - 4; i <= page_num; i++) {
-                                    if (i <= 0) {
-                                        continue;
-                                    }
-                                    if (pageFirst <= 0) {
-                                        pageFirst = i;
-                                    }
-                                    if (pageCount >= 9) {
-                                        break;
-                                    }
-                                    if (pageIndex == i) {
-                                        pagination += '<li class="active"><a href="#' + i + '" onclick="ajaxPaginationFilter(' + i + ',' + building + ',' + unit + ')">' + i + '</a></li>';
-                                    } else {
-                                        pagination += '<li><a href="#' + i + '" onclick="ajaxPaginationFilter(' + i + ',' + building + ',' + unit + ')">' + i + '</a></li>';
-                                    }
-                                    ++pageCount;
-                                }
-                                for (i = pageFirst - 1; i > 0; --i) {
-                                    if (pageCount >= 9) {
-                                        break;
-                                    }
-                                    pagination = '<li><a href="#' + i + '" onclick="ajaxPaginationFilter(' + i + ',' + building + ',' + unit + ')">' + i + '</a></li>' + pagination;
-                                    ++pageCount;
-                                }
-                                pagination += '<li><a href="#' + page_num + '" onclick="ajaxPaginationFilter(' + page_num + ',' + building + ',' + unit + ')">&raquo;</a></li>';
-                                pagination = pagination_left + pagination;
-                                $(".pagination").html(pagination);
-
-                            } else {
-                                $(".pagination").html("");
-                            }
-
-
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else {
-
-            }
-        });
-
-        ajaxPagination(1);
 
         $("#submit").click(function () {
-            if ($(this).attr("attr") == "editRoom") {
+            if ($(this).attr("attr") == "edit") {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=editRoom",
-                    data: {
-                        id: $("#dataId").val(),
-                        building: $("#showBuildings").val(),
-                        unit: $("#showUnits").val(),
-                        room: $("#data").val()
-                    },
+                    url: _ajaxLink + "backend/?c=admin&m=editAdmin",
+                    data: {id: $("#userid").val(), username: $("#username").val(),password:$("#password").val()},
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -570,55 +367,10 @@
                     },
                     dataType: "json"
                 })
-            } else if ($(this).attr("attr") == "removeRoom") {
+            }else if($(this).attr("attr") == "remove"){
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=removeRoom",
-                    data: {id: $(this).attr("data-id")},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else if ($(this).attr("attr") == "addRoom") {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=addRoom",
-                    data: {building: $("#showBuildings").val(), unit: $("#showUnits").val(), room: $("#data").val()},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            }
-
-            /*
-            if ($(this).attr("attr") == "edit" && $(this).attr("data-target")=="outdoor") {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=editOutdoor",
-                    data: {id: $("#unitId").val(), building: $("#showBuildings").val(), unit: $("#unit").val()},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API error");
-                        }
-                    },
-                    dataType: "json"
-                })
-            } else if ($(this).attr("attr") == "remove") {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=removeRoom",
+                    url: _ajaxLink + "backend/?c=admin&m=removeAdmin",
                     data: {id: $(this).attr("data-id")},
                     success: function (data) {
                         if (data.state == 1) {
@@ -632,8 +384,8 @@
             } else {
                 $.ajax({
                     type: "POST",
-                    url: _ajaxLink + "backend/?c=location&m=addRoom",
-                    data: {building: $("#showBuildings").val(), unit: $("#showUnits").val(), room: $("#room").val()},
+                    url: _ajaxLink + "backend/?c=admin&m=addAdmin",
+                    data: {username: $("#username").val(),password: $("#password").val()},
                     success: function (data) {
                         if (data.state == 1) {
                             location.reload();
@@ -644,20 +396,17 @@
                     dataType: "json"
                 })
             }
-
-            */
 
         });
 
         $(document).on("click", ".fa-edit", function () {
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
-            $("#data").val($(this).attr("data"))
-            $("#dataId").val($(this).attr("data-id"))
-            $("#showBuildings").val($(this).attr("building"));
-            $("#showUnits").val($(this).attr("unit"));
-            //$("#showBuildings").val()
-            $("#submit").attr("attr", "editRoom")
+            $(".modal-title").html($(this).attr("data-username"));
+            $("#username").val($(this).attr("data-username"))
+            $("#password").val($(this).attr("data-password"))
+            $("#userid").val($(this).attr("data-id"))
+            $("#submit").attr("attr", "edit")
             $("#modal-default").show();
 
         });
@@ -666,10 +415,10 @@
             $('body').append('<div class="modal-backdrop fade in"></div>');
             //$("#modal-default").addClass("modal-danger");
             $("#modal-default").addClass("in");
-            $(".modal-title").html("");
-            $(".modal-body").html($(this).attr("confirm"))
-            $("#submit").attr("data-id", $(this).attr("data-id"))
-            $("#submit").attr("attr", "removeRoom")
+            $(".modal-title").html($.i18n.map['string_exteme_danger']);
+            $(".modal-body").html('<h2>'+$.i18n.map['string_confirm_remove_child']+'</h2>')
+            $("#submit").attr("data-id",$(this).attr("data-id"))
+            $("#submit").attr("attr", "remove")
             $("#submit").addClass("btn-danger")
             $("#modal-default").show();
 
@@ -681,19 +430,24 @@
         })
     })
 
+
+
     function ajaxPagination(page) {
         $.ajax({
             type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getRooms",
+            url: _ajaxLink + "backend/?c=admin&m=getAdmins",
             data: {rpp: rpp, page: page},
             success: function (data) {
                 if (data.state == 1) {
                     var innerStr = "";
                     $.each(data.ret, function (k, v) {
-                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
+                        innerStr = innerStr + "<tr><td>" + v.id + "</td><td>" + v.username + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-username='" + v.username + "' data-password='" + v.password + "' data-id='" + v.id + "' \n" +
+                            " data-lang='string_lang23'>\n" +
+                            "\n" +
+                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.id + "' data-id='" + v.id + "'\n"+">\n" +"</button></div></td></tr>"
 
                     });
-                    $("#rooms").html(innerStr);
+                    $("#buildings").html(innerStr);
                     if (data.total > rpp) {
                         var page_num = Math.ceil(data.total / rpp)
 
@@ -743,68 +497,6 @@
             dataType: "json"
         })
     }
-
-    function ajaxPaginationFilter(page, building, unit) {
-        $.ajax({
-            type: "GET",
-            url: _ajaxLink + "backend/?c=location&m=getRooms",
-            data: {building: building, unit: unit, rpp: rpp, page: page},
-            success: function (data) {
-                if (data.state == 1) {
-                    var innerStr = "";
-                    $.each(data.ret, function (k, v) {
-                        innerStr = innerStr + "<tr><td>" + v.room + "</td><td>" + v.unit + "</td><td>" + v.building + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data='" + v.room + "' data-id='" + v.id + "' building='" + v.buildingId + "' unit='" + v.unitId + "' data-lang='string_lang23'></button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.building + "'confirm='" + data.confirm + "' data-id='" + v.id + "'\n" + ">\n" + "</button></div></td></tr>"
-
-                    });
-                    $("#rooms").html(innerStr);
-                    if (data.total > rpp) {
-                        var page_num = Math.ceil(data.total / rpp)
-                        pagination_left = '<li><a href="#1" aria-label="Previous" onclick="ajaxPaginationFilter(1)"><span aria-hidden="true">«</span></a></li>';
-                        pagination = '';
-                        var pageIndex = parseInt(window.location.href.split("#").pop());
-                        pageIndex = pageIndex ? pageIndex : 1;
-                        pageFirst = pageIndex - 4;
-                        var pageCount = 0;
-                        for (i = pageIndex - 4; i <= page_num; i++) {
-                            if (i <= 0) {
-                                continue;
-                            }
-                            if (pageFirst <= 0) {
-                                pageFirst = i;
-                            }
-                            if (pageCount >= 9) {
-                                break;
-                            }
-                            if (pageIndex == i) {
-                                pagination += '<li class="active"><a href="#' + i + '" onclick="ajaxPaginationFilter(' + i + ',' + building + ',' + unit + ')">' + i + '</a></li>';
-                            } else {
-                                pagination += '<li><a href="#' + i + '" onclick="ajaxPaginationFilter(' + i + ',' + building + ',' + unit + ')">' + i + '</a></li>';
-                            }
-                            ++pageCount;
-                        }
-                        for (i = pageFirst - 1; i > 0; --i) {
-                            if (pageCount >= 9) {
-                                break;
-                            }
-                            pagination = '<li><a href="#' + i + '" onclick="ajaxPaginationFilter(' + i + ',' + building + ',' + unit + ')">' + i + '</a></li>' + pagination;
-                            ++pageCount;
-                        }
-                        pagination += '<li><a href="#' + page_num + '" onclick="ajaxPaginationFilter(' + page_num + ',' + building + ',' + unit + ')">&raquo;</a></li>';
-                        pagination = pagination_left + pagination;
-                        $(".pagination").html(pagination);
-
-                    } else {
-                        $(".pagination").html("");
-                    }
-
-
-                } else {
-                    alert("API error");
-                }
-            },
-            dataType: "json"
-        })
-    }
 </script>
 <script>
     if ($.cookie('lang') == "english") {
@@ -834,32 +526,6 @@
     }
     $(document).ready(function () {
         language_pack.loadProperties(0);
-        $("#addRoomBtn").click(function () {
-            $('body').append('<div class="modal-backdrop fade in"></div>');
-            $("#modal-default").addClass("in");
-            $("#modal-default").show();
-            $(".modal-title").html($.i18n.map['string_lang30']);
-            $("#submit").attr("attr", "addRoom")
-        })
-
-        $("#addOutDoorBtn").click(function () {
-            $('body').append('<div class="modal-backdrop fade in"></div>');
-            $("#modal-default").addClass("in");
-            $("#modal-default").show();
-            //$(".modal-title").attr("data-lang","string_lang31");
-            $(".modal-title").html($.i18n.map['string_lang32']);
-            tablesHTML = $(".modal-body").find("table").html();
-            $(".modal-body").find("table").empty();
-            $(".modal-body").find("table").html(tablesHTML);
-            $(".modal-body").find("table").append('<tr>\n' +
-                '                            <td>\n' +
-                '                                <input type="text" id="data" class="form-control">\n' +
-                '                            </td>\n' +
-                '                        </tr>');
-
-            $("#submit").attr("attr", "addOutdoor")
-
-        })
         $(".fa-sign-in").click(function () {
             window.location.href = _ajaxLink + "frontend/index.html";
         })
