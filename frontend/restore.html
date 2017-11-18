@@ -181,7 +181,11 @@
 
             </h1>
 
-<hr>
+            <hr>
+            <!-- The global progress bar -->
+            <div id="progress" class="progress" style="display: none">
+                <div class="progress-bar progress-bar-success progress-bar-striped"></div>
+            </div>
             <span class="btn btn-success fileinput-button">
                                         <i class="glyphicon glyphicon-plus"></i>
                                         <span>Add files...</span>
@@ -259,9 +263,10 @@
             </div>
             <div class="modal-body">
                 <p><input type="text" id="password" class="form-control"></p>
+                <p id="passwordinfo"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline" id="submit-btn" data-dismiss="modal" data-lang="string_lang101">Save
+                <button type="button" class="btn btn-outline" id="submit-btn" data-lang="string_lang101">Save
                     changes
                 </button>
             </div>
@@ -352,32 +357,6 @@
 
         })
 
-        $(document).on("click", "#submit-btn", function () {
-
-            //$("[data-dismiss|='modal']").click(function () {
-            if ($(this).attr("attr") == "message") {
-                $("#modal-warning").removeClass("in");
-                $("#modal-warning").hide();
-                $(".modal-backdrop").remove();
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: _ajaxLink + "backend/?c=setting&m=systemSetting",
-                    data: {project_name: $("#projectname").val(), address: $("#address").val(), tel: $("#tel").val()},
-                    success: function (data) {
-                        if (data.state == 1) {
-                            location.reload();
-                        } else {
-                            alert("API");
-                        }
-                    },
-                    dataType: "json"
-                })
-            }
-
-
-        })
-
         $("[data-dismiss|='modal']").click(function () {
             $("#modal-warning").removeClass("in");
             $("#modal-warning").hide();
@@ -425,6 +404,7 @@
 
             done: function (e, data) {
                 if (data.result.state == 1) {
+                    $("#progress").hide();
                     $("#layoutit").show();
                     var olds = data.result.ret.old_data;
                     var news = data.result.ret.new_data;
@@ -441,6 +421,7 @@
                     $(".box").show();
                     $("#olds_tb").html(inner_olds);
                     $("#news_tb").html(inner_news);
+                    $("#submit-btn").attr("data", JSON.stringify(news));
                     $("#addRoomBtn").show();
 
 
@@ -469,15 +450,58 @@ var obj=olds[k];
 
                 }
 
-            },
-            progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
             }
+        }).on('fileuploadadd', function (e, data) {
+            $("#progress").show();
+        }).on('fileuploadprogressall', function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+            $(".progress-bar-striped").html(progress + '%');
         })
+
+
+        $('#submit-btn').on('click', function () {
+            var password = $("#password").val();
+
+            $.ajax({
+                type: "GET",
+                url: _ajaxLink + "backend/?c=setting&m=systemSetting",
+                success: function (data) {
+                    if (data.state == 1) {
+                        if (data.ret.password == $("#password").val()) {
+
+                            $.ajax({
+                                type: "POST",
+                                url: _ajaxLink + "backend/?c=setting&m=restore",
+                                data: {basic_data: JSON.parse($("#submit-btn").attr("data"))},
+                                success: function (data) {
+                                    if (data.state == 1) {
+
+                                        location.reload();
+                                    } else {
+                                        alert("API error");
+                                    }
+                                },
+                                dataType: "json"
+                            })
+
+
+                        } else {
+
+                            $("#passwordinfo").html($.i18n.map['string_lang107']);
+                            return false;
+                        }
+                    } else {
+                        alert("API error");
+                    }
+                },
+                dataType: "json"
+            })
+
+        });
 
     });
 </script>
