@@ -337,9 +337,9 @@
 <script src="dist/js/demo.js"></script>
 <script data-pace-options='{"ajax": true }' src="bower_components/PACE/pace.min.js"></script>
 <script>
-    $(document).ajaxStart(function() {
-        Pace.start();
-    });
+    if($.cookie('username')==null || $.cookie('username')==""){
+        window.location.href = _ajaxLink + "frontend/index.html";
+    }
     $(function () {
         $.ajax({
             type: "GET",
@@ -347,7 +347,7 @@
             success: function (data) {
                 if (data.state == 1) {
                     $(".logo-lg").html(data.ret.project_name);
-                    $(".hidden-xs").html(data.ret.username);
+                    $(".hidden-xs").html($.cookie('username'));
                 } else {
                     alert("API error");
                 }

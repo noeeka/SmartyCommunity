@@ -308,6 +308,9 @@
 <script src="bower_components/PACE/pace.min.js"></script>
 <script>
 
+    if($.cookie('username')==null || $.cookie('username')==""){
+        window.location.href = _ajaxLink + "frontend/index.html";
+    }
     $(function () {
         (window.location.href.indexOf("#") > 0) ? page = window.location.href.split("#").pop() : page = 1;
 
@@ -318,7 +321,7 @@
             success: function (data) {
                 if (data.state == 1) {
                     $(".logo-lg").html(data.ret.project_name);
-                    $(".hidden-xs").html(data.ret.username);
+                    $(".hidden-xs").html($.cookie('username'));
                 } else {
                     alert("API error");
                 }

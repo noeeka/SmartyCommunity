@@ -124,6 +124,8 @@
                 success: function (data) {
                     if (data.state == 1) {
                         $.cookie('lang', $("#showLang").val(),{path: '/'});
+                        $.cookie('username', $("#username").val(),{path: '/'});
+                        $.cookie('permit', data.permit,{path: '/'});
                         window.location.href = _ajaxLink + "frontend/dashboard.html";
                     } else {
                         $("#loginInfo").html(data.ret);
@@ -143,6 +145,8 @@
                 success: function (data) {
                     if (data.state == 1) {
                         $.cookie('lang', $("#showLang").val(),{path: '/'});
+                        $.cookie('username', $("#username").val(),{path: '/'});
+                        $.cookie('permit', data.permit,{path: '/'});
                         window.location.href = _ajaxLink + "frontend/dashboard.html";
                     } else {
                         $("#loginInfo").html(data.ret);

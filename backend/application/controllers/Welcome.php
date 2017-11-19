@@ -10,18 +10,30 @@ class Welcome extends CI_Controller {
 
         $this->db->select('username,password');
         $this->db->from('setting');
-        $result = $this->db->get()->row();
-        if($result->username!=$username){
+        $result_super = $this->db->get()->row();
+
+
+        $this->db->select('username,password');
+        $this->db->from('administrator');
+        $array = array('username' => $username, 'password' => $password);
+        $this->db->where($array);
+        $result_admin = $this->db->get()->row();
+        if($result_super->username!=$username && $result_admin->username!=$username){
             echo json_encode(array("state" => 0, "ret" =>$this->lang->line('login_validation_username')));
             die;
         }
-        if($result->password!=$password){
+        if($result_super->password!=$password && $result_admin->password!=$password){
             echo json_encode(array("state" => 0, "ret" =>$this->lang->line('login_validation_password')));
             die;
         }
 
-        if($result->username==$username && $result->password==$password){
-            echo json_encode(array("state" => 1, "ret" =>"success"));
+        if($result_super->username==$username && $result_super->password==$password){
+            echo json_encode(array("state" => 1, "ret" =>"success","permit"=>"super"));
+            die;
+        }
+
+        if($result_admin->username==$username && $result_admin->password==$password){
+            echo json_encode(array("state" => 1, "ret" =>"success","permit"=>"admin"));
             die;
         }
 	}

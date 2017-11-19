@@ -325,6 +325,15 @@
 <script src="bower_components/PACE/pace.min.js"></script>
 <script>
 
+    if($.cookie('username')==null || $.cookie('username')==""){
+        window.location.href = _ajaxLink + "frontend/index.html";
+    }
+    if($.cookie('permit')=="super"){
+        $("#addBuildingBtn").show();
+    }else{
+        $("#addBuildingBtn").hide();
+    }
+
     $(function () {
         (window.location.href.indexOf("#") > 0) ? page = window.location.href.split("#").pop() : page = 1;
 
@@ -335,7 +344,7 @@
             success: function (data) {
                 if (data.state == 1) {
                     $(".logo-lg").html(data.ret.project_name);
-                    $(".hidden-xs").html(data.ret.username);
+                    $(".hidden-xs").html($.cookie('username'));
                 } else {
                     alert("API error");
                 }
@@ -441,10 +450,21 @@
                 if (data.state == 1) {
                     var innerStr = "";
                     $.each(data.ret, function (k, v) {
-                        innerStr = innerStr + "<tr><td>" + v.id + "</td><td>" + v.username + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-username='" + v.username + "' data-password='" + v.password + "' data-id='" + v.id + "' \n" +
-                            " data-lang='string_lang23'>\n" +
-                            "\n" +
-                            "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.id + "' data-id='" + v.id + "'\n"+">\n" +"</button></div></td></tr>"
+                        if($.cookie('permit') == 'super'){
+                            innerStr = innerStr + "<tr><td>" + v.id + "</td><td>" + v.username + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-username='" + v.username + "' data-password='" + v.password + "' data-id='" + v.id + "' \n" +
+                                " data-lang='string_lang23'>\n" +
+                                "\n" +
+                                "</button><button type=\"button\" class=\"btn btn-danger fa fa-trash\" data='" + v.id + "' data-id='" + v.id + "'\n"+">\n" +"</button></div></td></tr>"
+                        }else if(v.username==$.cookie('username')){
+                            innerStr = innerStr + "<tr><td>" + v.id + "</td><td>" + v.username + "</td><td><div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-success fa fa-edit\" data-username='" + v.username + "' data-password='" + v.password + "' data-id='" + v.id + "' \n" +
+                                " data-lang='string_lang23'>\n" +
+                                "\n" +
+                                "</button></div></td></tr>"
+
+                        }else{
+                            innerStr = innerStr + "<tr><td>" + v.id + "</td><td>" + v.username + "</td><td><div class=\"btn-group\" role=\"group\"></div></td></tr>"
+                        }
+
 
                     });
                     $("#buildings").html(innerStr);

@@ -327,6 +327,10 @@
 <!-- The basic File Upload plugin -->
 <script src="bower_components/jquery-fileupload/js/jquery.fileupload.js"></script>
 <script>
+
+    if($.cookie('username')==null || $.cookie('username')==""){
+        window.location.href = _ajaxLink + "frontend/index.html";
+    }
     $(function () {
         $.ajax({
             type: "GET",
@@ -339,7 +343,7 @@
                 $(".content").show()
                 if (data.state == 1) {
                     $(".logo-lg").html(data.ret.project_name);
-                    $(".hidden-xs").html(data.ret.username);
+                    $(".hidden-xs").html($.cookie('username'));
                     $("#projectname").val(data.ret.project_name);
                     $("#address").val(data.ret.address);
                     $("#tel").val(data.ret.tel);
