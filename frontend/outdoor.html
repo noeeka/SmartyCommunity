@@ -99,7 +99,7 @@
 
                     </li>
                     <!-- Control Sidebar Toggle Button -->
-                    <li>
+                    <li id="logout">
                         <a href="#" data-toggle="control-sidebar"><i class="fa fa-sign-in"></i></a>
                     </li>
                 </ul>
@@ -352,7 +352,7 @@
 <script data-pace-options='{"ajax": true }' src="bower_components/PACE/pace.min.js"></script>
 
 <script>
-    if($.cookie('username')==null || $.cookie('username')==""){
+    if($.cookie('username')==null || $.cookie('username')==""|| $.cookie('username')=="null"){
         window.location.href = _ajaxLink + "frontend/index.html";
     }
     $(function () {
@@ -840,7 +840,8 @@
             $("#submit").attr("attr", "addOutdoor")
 
         })
-        $(".fa-sign-in").click(function () {
+        $("#logout").click(function () {
+            $.cookie('username',null,{path: '/'});
             window.location.href = _ajaxLink + "frontend/index.html";
         })
 

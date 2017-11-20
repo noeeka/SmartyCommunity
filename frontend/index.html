@@ -36,12 +36,14 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
         <form action="#" method="post">
+            <input style="display: none" type="text" />
+            <input style="display: none" type="password"/>
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="用户名" id="username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="密码" id="password">
+                <input  type="text" onfocus="this.type='password'" class="form-control" placeholder="密码" id="password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
 

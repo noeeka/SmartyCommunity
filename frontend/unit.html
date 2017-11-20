@@ -100,7 +100,7 @@
 
                     </li>
                     <!-- Control Sidebar Toggle Button -->
-                    <li>
+                    <li id="logout">
                         <a href="#" data-toggle="control-sidebar"><i class="fa fa-sign-in"></i></a>
                     </li>
                 </ul>
@@ -327,7 +327,7 @@
 <script src="dist/js/demo.js"></script>
 <script src="bower_components/PACE/pace.min.js"></script>
 <script>
-    if($.cookie('username')==null || $.cookie('username')==""){
+    if($.cookie('username')==null || $.cookie('username')==""|| $.cookie('username')=="null"){
         window.location.href = _ajaxLink + "frontend/index.html";
     }
     $(function () {
@@ -466,6 +466,13 @@
 
         $("#submit").click(function () {
             if ($(this).attr("attr") == "edit") {
+                if(getByteLen($("#unit").val())>2 || $("#unit").val()==""){
+                    $("#unit").css("border-color","#dd4b39");
+                    $("#unit").css("box-shadow","none");
+                    return false;
+                }
+
+
                 $.ajax({
                     type: "POST",
                     url: _ajaxLink + "backend/?c=location&m=editUnit",
@@ -494,6 +501,12 @@
                     dataType: "json"
                 })
             } else {
+
+                if(getByteLen($("#unit").val())>2 || $("#unit").val()==""){
+                    $("#unit").css("border-color","#dd4b39");
+                    $("#unit").css("box-shadow","none");
+                    return false;
+                }
                 $.ajax({
                     type: "POST",
                     url: _ajaxLink + "backend/?c=location&m=addUnit",
@@ -541,6 +554,7 @@
             $("#modal-default").removeClass("in");
             $("#modal-default").hide();
             $(".modal-backdrop").remove();
+            $('#unit').removeAttr("style")
         })
     })
 
@@ -697,7 +711,8 @@
     }
     $(document).ready(function () {
         language_pack.loadProperties(0);
-        $(".fa-sign-in").click(function () {
+        $("#logout").click(function () {
+            $.cookie('username',null,{path: '/'});
             window.location.href = _ajaxLink + "frontend/index.html";
         })
 
