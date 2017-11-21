@@ -45,7 +45,7 @@ class UploadHandler
         $this->options = array(
             'script_url' => $this->get_full_url().'/'.$this->basename($this->get_server_var('SCRIPT_NAME')),
             'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')).'/temp/',
-            'upload_url' => $this->get_full_url().'/files/',
+            'upload_url' => $this->get_full_url().'/temp/',
             'input_stream' => 'php://input',
             'user_dirs' => false,
             'mkdir_mode' => 0755,
@@ -1086,7 +1086,11 @@ class UploadHandler
                         FILE_APPEND
                     );
                 } else {
-                    move_uploaded_file($uploaded_file, $file_path);
+                    $out=move_uploaded_file($uploaded_file, $file_path);
+                    if($out==false){
+                        echo json_encode(array("state" => 0, "ret" => "file_format_error"));
+                        die;
+                    }
                 }
             } else {
                 // Non-multipart uploads (PUT method support)

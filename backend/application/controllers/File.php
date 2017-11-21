@@ -16,26 +16,33 @@ class File extends CI_Controller
 
     public function getExcelContents()
     {
-
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/backend/temp/';
         set_time_limit(0);
         header("Content-type: text/html; charset=utf-8");
-
+        $path = $_SERVER['DOCUMENT_ROOT'] . '/backend/temp/';
         $this->load->library('UploadHandler');
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
         $upload_handler = new UploadHandler(array('print_response' => false));
 
-        //$reponse = $upload_handler->response;
+        //reponse = $upload_handler->response;
+
+
 
         $open_dir = opendir($path);
         while ($file = readdir($open_dir)) {
             if ($file != "." && $file != "..") {
                 $file_a = $file;
+                break;
             }
         }
 
         $filePath = $path . $file_a;
+        if(empty($filePath)){
+            echo json_encode(array("state" => 0, "ret" => "file_format_error"));
+            die;
+        }
+
+
 
 
         //chmod($filePath, 0777);
@@ -55,8 +62,12 @@ class File extends CI_Controller
         $result = array();
         $res_ori = array();
         if (empty($data[2][3])) {
-            unlink($filePath);
-            json_encode(array("state" => 0, "ret" => "file_format_error"));
+
+            if (!$a) {
+                echo json_encode(array("state" => 0, "ret" => "retry"));
+                die;
+            }
+            echo json_encode(array("state" => 0, "ret" => "file_format_error"));
             die;
         }
         //去掉数组前两个（根据大高欣的格式再订）
@@ -70,6 +81,7 @@ class File extends CI_Controller
             $result[$key]['unit'] = $value[1];
             $result[$key]['room'] = $value[2];
         }
+
         if (!empty($result)) {
 
             $this->delFileUnderDir($path);

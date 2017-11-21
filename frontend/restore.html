@@ -267,7 +267,7 @@
                 <p id="passwordinfo"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline" id="submit-btn" data-lang="string_lang101">Save
+                <button type="button" class="btn btn-outline" data-dismiss="modal" data-lang="string_lang101">Save
                     changes
                 </button>
             </div>
@@ -409,6 +409,7 @@
             acceptFileTypes: /(\.|\/)(xls)$/i,
 
             done: function (e, data) {
+                $(".fileinput-button").show();
                 if (data.result.state == 1) {
                     $("#progress").hide();
                     $("#layoutit").show();
@@ -451,7 +452,12 @@ var obj=olds[k];
                     $("#news_tb").html(inner_news);
                     */
                 } else if (data.result.ret == "file_format_error") {
-
+                    $('body').append('<div class="modal-backdrop fade in"></div>');
+                    //$("#modal-default").addClass("modal-danger");
+                    $("#modal-warning").addClass("in");
+                    $(".modal-title").html("");
+                    $(".modal-body").html($.i18n.map['string_error_file'])
+                    $("#modal-warning").show();
                 } else {
 
                 }
@@ -460,12 +466,20 @@ var obj=olds[k];
         }).on('fileuploadadd', function (e, data) {
             $("#progress").show();
         }).on('fileuploadprogressall', function (e, data) {
+            $(".fileinput-button").hide();
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#progress .progress-bar').css(
                 'width',
                 progress + '%'
             );
             $(".progress-bar-striped").html(progress + '%');
+        })
+
+        $("[data-dismiss|='modal']").click(function () {
+            $("#modal-warning").removeClass("in");
+            $("#modal-warning").hide();
+            $(".modal-backdrop").remove();
+            $("#progress").hide();
         })
 
 
