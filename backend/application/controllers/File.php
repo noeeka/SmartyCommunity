@@ -16,20 +16,40 @@ class File extends CI_Controller
 
     public function getExcelContents()
     {
+
+        $path = $_SERVER['DOCUMENT_ROOT'] . '/backend/temp/';
         set_time_limit(0);
         header("Content-type: text/html; charset=utf-8");
+
         $this->load->library('UploadHandler');
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
-        $options = array('upload_dir' => '/temp');
-        $upload_handler = new UploadHandler($options);
-        $reponse = $upload_handler->response;
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/backend/temp/' . $reponse['files'][0]->name;
+        $upload_handler = new UploadHandler(array('print_response' => false));
+
+        //$reponse = $upload_handler->response;
+
+        $open_dir = opendir($path);
+        while ($file = readdir($open_dir)) {
+            if ($file != "." && $file != "..") {
+                $file_a = $file;
+            }
+        }
+
+        $filePath = $path . $file_a;
 
 
-        $reader = new PHPExcel_Reader_Excel5();
-        $excel = $reader->load($filePath); //excel的路径
-        $data = $excel->getActiveSheet()->toArray();
+        //chmod($filePath, 0777);
+        $_ReadExcel = new PHPExcel_Reader_Excel2007();
+        if (!$_ReadExcel->canRead($filePath)) {
+            $_ReadExcel = new PHPExcel_Reader_Excel5();
+        }
+        $_phpExcel = $_ReadExcel->load($filePath);
+
+
+        //$excel = $reader->load($filePath); //excel的路径
+
+
+        $data = $_phpExcel->getActiveSheet()->toArray();
 
         $res = array();
         $result = array();
@@ -51,7 +71,8 @@ class File extends CI_Controller
             $result[$key]['room'] = $value[2];
         }
         if (!empty($result)) {
-            unlink($filePath);
+
+            $this->delFileUnderDir($path);
         } else {
             json_encode(array("state" => 0, "ret" => "retry"));
             die;
@@ -72,6 +93,22 @@ class File extends CI_Controller
         echo json_encode(array("state" => 1, "ret" => array("new_data" => $result, "old_data" => $res_ori)));
         die;
 
+    }
+
+    function delFileUnderDir($dirName)
+    {
+        if ($handle = opendir($dirName)) {
+            while (false !== ($item = readdir($handle))) {
+                if ($item != "." && $item != "..") {
+                    if (is_dir($dirName . '/' . $item)) {
+                        delFileUnderDir($dirName . '/' . $item);
+                    } else {
+                        unlink($dirName . '/' . $item);
+                    }
+                }
+            }
+            closedir($handle);
+        }
     }
 
 }

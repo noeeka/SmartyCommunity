@@ -262,7 +262,7 @@
                         <tr>
                             <td>
                                 <select id="showBuildings" class="form-control">
-                                    <option data-lang="string_lang24">请选择语言</option>
+                                    <option data-lang="string_lang24" value="">请选择语言</option>
                                 </select>
                             </td>
                         </tr>
@@ -466,9 +466,19 @@
 
         $("#submit").click(function () {
             if ($(this).attr("attr") == "edit") {
+                $('#showBuildings').removeAttr("style")
                 if(getByteLen($("#unit").val())>2 || $("#unit").val()==""){
-                    $("#unit").css("border-color","#dd4b39");
-                    $("#unit").css("box-shadow","none");
+                    $('.help-block').remove()
+                    $('.has-error').parent().html($('.has-error').html());
+                    $("#unit").wrapAll("<div class=\"form-group has-error\"></div>");
+                    $("#unit").after("<span class=\"help-block\">"+$.i18n.map['string_error_unit']+"</span>");
+                    return false;
+                }
+
+
+                if($("#showBuildings").val()=="" || $("#showBuildings").val()==null){
+                    $("#showBuildings").css("border-color","#dd4b39");
+                    $("#showBuildings").css("box-shadow","none");
                     return false;
                 }
 
@@ -501,10 +511,19 @@
                     dataType: "json"
                 })
             } else {
-
+                $('#showBuildings').removeAttr("style")
                 if(getByteLen($("#unit").val())>2 || $("#unit").val()==""){
-                    $("#unit").css("border-color","#dd4b39");
-                    $("#unit").css("box-shadow","none");
+                    $('.help-block').remove()
+                    $('.has-error').parent().html($('.has-error').html());
+                    $("#unit").wrapAll("<div class=\"form-group has-error\"></div>");
+                    $("#unit").after("<span class=\"help-block\">"+$.i18n.map['string_error_unit']+"</span>");
+
+                    return false;
+                }
+
+                if($("#showBuildings").val()=="" || $("#showBuildings").val()==null){
+                    $("#showBuildings").css("border-color","#dd4b39");
+                    $("#showBuildings").css("box-shadow","none");
                     return false;
                 }
                 $.ajax({
@@ -553,8 +572,10 @@
         $("[data-dismiss|='modal']").click(function () {
             $("#modal-default").removeClass("in");
             $("#modal-default").hide();
+            $('#showBuildings').removeAttr("style")
             $(".modal-backdrop").remove();
-            $('#unit').removeAttr("style")
+            $('.help-block').remove()
+            $('.has-error').parent().html($('.has-error').html());
         })
     })
 

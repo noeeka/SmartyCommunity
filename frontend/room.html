@@ -264,14 +264,14 @@
                         <tr>
                             <td>
                                 <select id="showBuildings" class="form-control">
-                                    <option data-lang="string_lang24">请选择语言</option>
+                                    <option data-lang="string_lang24" value="">请选择语言</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <select id="showUnits" class="form-control">
-                                    <option data-lang="string_lang29">请选择语言</option>
+                                    <option data-lang="string_lang29" value="">请选择语言</option>
                                 </select>
                             </td>
                         </tr>
@@ -552,9 +552,27 @@
 
         $("#submit").click(function () {
             if ($(this).attr("attr") == "editRoom") {
-                if(getByteLen($("#data").val())>2 || $("#data").val()==""){
-                    $("#data").css("border-color","#dd4b39");
-                    $("#data").css("box-shadow","none");
+                $('#showBuildings').removeAttr("style")
+                $('#showUnits').removeAttr("style")
+                $('.help-block').remove()
+                $('#data').parent().removeClass('has-error')
+                if(getByteLen($("#data").val())>4 || $("#data").val()==""){
+                    $('.help-block').remove()
+                    $('.has-error').parent().html($('.has-error').html());
+                    $("#data").wrapAll("<div class=\"form-group has-error\"></div>");
+                    $("#data").after("<span class=\"help-block\">"+$.i18n.map['string_error_room']+"</span>");
+                    return false;
+                }
+
+                if($("#showBuildings").val()=="" || $("#showBuildings").val()==null){
+                    $("#showBuildings").css("border-color","#dd4b39");
+                    $("#showBuildings").css("box-shadow","none");
+                    return false;
+                }
+
+                if($("#showUnits").val()=="" || $("#showUnits").val()==null){
+                    $("#showUnits").css("border-color","#dd4b39");
+                    $("#showUnits").css("box-shadow","none");
                     return false;
                 }
                 $.ajax({
@@ -590,9 +608,27 @@
                     dataType: "json"
                 })
             } else if ($(this).attr("attr") == "addRoom") {
-                if(getByteLen($("#data").val())>2 || $("#data").val()==""){
-                    $("#data").css("border-color","#dd4b39");
-                    $("#data").css("box-shadow","none");
+                $('#showBuildings').removeAttr("style")
+                $('#showUnits').removeAttr("style")
+                $('.help-block').remove()
+                $('#data').parent().removeClass('has-error')
+                if(getByteLen($("#data").val())>4 || $("#data").val()==""){
+                    $('.help-block').remove()
+                    $('.has-error').parent().html($('.has-error').html());
+                    $("#data").wrapAll("<div class=\"form-group has-error\"></div>");
+                    $("#data").after("<span class=\"help-block\">"+$.i18n.map['string_error_room']+"</span>");
+                    return false;
+                }
+
+                if($("#showBuildings").val()=="" || $("#showBuildings").val()==null){
+                    $("#showBuildings").css("border-color","#dd4b39");
+                    $("#showBuildings").css("box-shadow","none");
+                    return false;
+                }
+
+                if($("#showUnits").val()=="" || $("#showUnits").val()==null){
+                    $("#showUnits").css("border-color","#dd4b39");
+                    $("#showUnits").css("box-shadow","none");
                     return false;
                 }
                 $.ajax({
@@ -688,7 +724,11 @@
             $("#modal-default").removeClass("in");
             $("#modal-default").hide();
             $(".modal-backdrop").remove();
-            $('#data').removeAttr("style")
+            $('#showBuildings').removeAttr("style")
+            $('#showUnits').removeAttr("style")
+            $(".modal-backdrop").remove();
+            $('.help-block').remove()
+            $('.has-error').parent().html($('.has-error').html());
         })
     })
 

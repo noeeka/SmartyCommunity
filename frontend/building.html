@@ -353,8 +353,8 @@
         $("#submit").click(function () {
             if ($(this).attr("attr") == "edit") {
                 if(getByteLen($("#building").val())>3 || $("#building").val()==""){
-                    $("#building").css("border-color","#dd4b39");
-                    $("#building").css("box-shadow","none");
+                    $("#building").wrapAll("<div class=\"form-group has-error\"></div>");
+                    $("#building").after("<span class=\"help-block\">"+$.i18n.map['string_error_building']+"</span>");
                     return false;
                 }
                 $.ajax({
@@ -386,8 +386,8 @@
                 })
             } else {
                 if(getByteLen($("#building").val())>3 || $("#building").val()==""){
-                    $("#building").css("border-color","#dd4b39");
-                    $("#building").css("box-shadow","none");
+                    $("#building").wrapAll("<div class=\"form-group has-error\"></div>");
+                    $("#building").after("<span class=\"help-block\">"+$.i18n.map['string_error_building']+"</span>");
                     return false;
                 }
                 $.ajax({
@@ -433,7 +433,9 @@
             $("#modal-default").removeClass("in");
             $("#modal-default").hide();
             $(".modal-backdrop").remove();
-            $('#building').removeAttr("style")
+
+            $('.help-block').remove()
+            $('.has-error').parent().html($('.has-error').html());
             //$("#building").css("border-color","#dd4b39");
             //$("#building").css("box-shadow","none");
         })
