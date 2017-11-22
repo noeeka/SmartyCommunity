@@ -267,7 +267,7 @@
                 <p id="passwordinfo"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline" data-dismiss="modal" data-lang="string_lang101">Save
+                <button type="button" class="btn btn-outline" id="submit-btn" data-dismiss="modal" data-lang="string_lang101">Save
                     changes
                 </button>
             </div>
@@ -357,7 +357,10 @@
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-warning").addClass("in");
             $("#modal-warning").show();
-            $("[data-dismiss|='modal']").attr("attr", "edit")
+            $(".modal-title").html($.i18n.map['string_lang106'])
+            $(".modal-body").html('<p><input type="text" id="password" class="form-control"></p><p id="passwordinfo"></p>');
+            $('#submit-btn').removeAttr("data-dismiss");
+            //$("[data-dismiss|='modal']").attr("attr", "edit")
             return false;
 
         })
@@ -431,26 +434,6 @@
                     $("#submit-btn").attr("data", JSON.stringify(news));
                     $("#addRoomBtn").show();
 
-
-                    /*
-                    if (news.length < olds.length) {
-
-                        $.each(olds, function (k, v) {
-                            inner_olds = inner_olds + "<tr><td>" + v[0] + "</td><td>" + v[1] + "</td><td>" + v[2] + "</td></tr>"
-                            inner_news = inner_news + "<tr><td>" + news[0] + "</td><td>" + news[1] + "</td><td>" + news[2] + "</td></tr>"
-                        })
-                    } else {
-
-                        $.each(news, function (k, v) {
-var obj=olds[k];
-                           inner_olds = inner_olds + "<tr><td>" + obj.building + "</td><td>" + obj.unit + "</td><td>" + obj.room + "</td></tr>"
-                            inner_news = inner_news + "<tr><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
-                        })
-                    }
-
-                    $("#olds_tb").html(inner_olds);
-                    $("#news_tb").html(inner_news);
-                    */
                 } else if (data.result.ret == "file_format_error") {
                     $('body').append('<div class="modal-backdrop fade in"></div>');
                     //$("#modal-default").addClass("modal-danger");
@@ -464,7 +447,17 @@ var obj=olds[k];
 
             }
         }).on('fileuploadadd', function (e, data) {
-            $("#progress").show();
+
+
+            $.ajax({
+                type: "GET",
+                url: _ajaxLink + "backend/?c=file&m=emptyDir",
+                success: function (data) {
+                    $("#progress").show();
+                },
+                dataType: "json"
+            })
+
         }).on('fileuploadprogressall', function (e, data) {
             $(".fileinput-button").hide();
             var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -485,6 +478,7 @@ var obj=olds[k];
 
         $('#submit-btn').on('click', function () {
             var password = $("#password").val();
+
 
             $.ajax({
                 type: "GET",
@@ -510,7 +504,10 @@ var obj=olds[k];
 
 
                         } else {
-
+                            $('body').append('<div class="modal-backdrop fade in"></div>');
+                            //$("#modal-default").addClass("modal-danger");
+                            $("#modal-warning").addClass("in");
+                            $("#modal-warning").show();
                             $("#passwordinfo").html($.i18n.map['string_lang107']);
                             return false;
                         }

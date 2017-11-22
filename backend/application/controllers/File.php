@@ -18,7 +18,8 @@ class File extends CI_Controller
     {
         set_time_limit(0);
         header("Content-type: text/html; charset=utf-8");
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/backend/temp/';
+        //$path = $_SERVER['DOCUMENT_ROOT'] . '/ilife/backend/temp/';
+$path=dirname(dirname(dirname(__FILE__)))."/temp/";
         $this->load->library('UploadHandler');
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
@@ -37,7 +38,9 @@ class File extends CI_Controller
         }
 
         $filePath = $path . $file_a;
-        if(empty($filePath)){
+
+        if(!strstr($filePath,".xls")){
+
             echo json_encode(array("state" => 0, "ret" => "file_format_error"));
             die;
         }
@@ -62,11 +65,6 @@ class File extends CI_Controller
         $result = array();
         $res_ori = array();
         if (empty($data[2][3])) {
-
-            if (!$a) {
-                echo json_encode(array("state" => 0, "ret" => "retry"));
-                die;
-            }
             echo json_encode(array("state" => 0, "ret" => "file_format_error"));
             die;
         }
@@ -121,6 +119,17 @@ class File extends CI_Controller
             }
             closedir($handle);
         }
+    }
+
+    public function emptyDir(){
+        //$path = $_SERVER['DOCUMENT_ROOT'] . '/ilife/backend/temp/';
+$path=dirname(dirname(dirname(__FILE__)))."/temp/";
+
+        exec("rm -f ".$path."*",$out);
+
+   
+            echo json_encode(array("state"=>1,"ret"=>"success"));
+
     }
 
 }

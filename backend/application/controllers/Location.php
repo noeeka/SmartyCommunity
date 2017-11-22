@@ -173,6 +173,14 @@ class Location extends CI_Controller
         echo json_encode(array("state" => 1, "ret" => $result, "confirm" => $this->lang->line('building_remove_confirm')));
     }
 
+    function getRoomsByUnitAndBuilding()
+    {
+        $building = $this->input->get("building");
+        $unit = $this->input->get("unit");
+        $result = $this->db->get_where('room', array("building" => $building,"unit" => $unit))->result();
+        echo json_encode(array("state" => 1, "ret" => $result));
+    }
+
     //添加房间服务
     function addRoom()
     {
