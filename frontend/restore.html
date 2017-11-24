@@ -418,16 +418,34 @@
                     $("#layoutit").show();
                     var olds = data.result.ret.old_data;
                     var news = data.result.ret.new_data;
-                    inner_olds = "<tr><td colspan='3' align='center' class='bg-yellow-gradient'>" + $.i18n.map['string_lang103'] + "</td></tr><tr><td>" + $.i18n.map['string_lang23'] + "</td><td>" + $.i18n.map['string_lang25'] + "</td><td>" + $.i18n.map['string_lang30'] + "</td></tr>";
+                    inner_olds = "<tr><td colspan='4' align='center' class='bg-yellow-gradient'>" + $.i18n.map['string_lang103'] + "</td></tr><tr><td></td><td>" + $.i18n.map['string_lang23'] + "</td><td>" + $.i18n.map['string_lang25'] + "</td><td>" + $.i18n.map['string_lang30'] + "</td></tr>";
                     inner_news = "<tr><td colspan='3' align='center' class='bg-red-gradient'>" + $.i18n.map['string_lang104'] + "</td></tr><tr><td>" + $.i18n.map['string_lang23'] + "</td><td>" + $.i18n.map['string_lang25'] + "</td><td>" + $.i18n.map['string_lang30'] + "</td></tr>";
 
                     $.each(olds, function (k, v) {
-                        inner_olds = inner_olds + "<tr><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+
+                        if(!news[k]){
+                            inner_olds = inner_olds + "<tr><td><i class=\"fa fa-circle text-danger\"></i></td><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+                        }else{
+                            if(v.building!=news[k].building || v.unit!=news[k].unit || v.room!=news[k].room){
+                                inner_olds = inner_olds + "<tr><td><i class=\"fa fa-circle text-danger\"></i></td><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+                            }else{
+                                inner_olds = inner_olds + "<tr><td><i class=\"fa fa-circle text-success\"></i></td><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
+                            }
+                        }
+
+
+
                     })
 
                     $.each(news, function (k, v) {
                         inner_news = inner_news + "<tr><td>" + v.building + "</td><td>" + v.unit + "</td><td>" + v.room + "</td></tr>"
                     })
+                    if(olds.length<news.length){
+                        for (i=0;i<(news.length-olds.length);i++){
+                            inner_olds=inner_olds+"<tr><td><i class=\"fa fa-circle text-danger\"></i></td><td></td><td></td><td></td></tr>"
+
+                        }
+                    }
                     $(".box").show();
                     $("#olds_tb").html(inner_olds);
                     $("#news_tb").html(inner_news);
@@ -440,7 +458,9 @@
                     $("#modal-warning").addClass("in");
                     $(".modal-title").html("");
                     $(".modal-body").html($.i18n.map['string_error_file'])
+                    $("#submit-btn").attr("id","vanish");
                     $("#modal-warning").show();
+                    return false
                 } else {
 
                 }
@@ -475,7 +495,10 @@
             $("#progress").hide();
         })
 
+        $('#vanish').on('click', function () {
+            location.reload();
 
+        })
         $('#submit-btn').on('click', function () {
             var password = $("#password").val();
 

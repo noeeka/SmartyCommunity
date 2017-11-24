@@ -83,6 +83,10 @@ class Location extends CI_Controller
     {
         $id = $this->input->post('id');
         $this->db->delete('building', array('id' => $id));
+        $this->db->delete('unity', array('building' => $id));
+        $this->db->delete('room', array('building' => $id));
+        $this->db->delete('outdoor', array('building' => $id));
+        $this->db->delete('indoor', array('building' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
 
@@ -161,6 +165,9 @@ class Location extends CI_Controller
     {
         $id = $this->input->post('id');
         $this->db->delete('unity', array('id' => $id));
+        $this->db->delete('room', array('unit' => $id));
+        $this->db->delete('outdoor', array('unit' => $id));
+        $this->db->delete('indoor', array('unit' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
 
@@ -265,6 +272,8 @@ class Location extends CI_Controller
     {
         $id = $this->input->post('id');
         $this->db->delete('room', array('id' => $id));
+
+        $this->db->delete('indoor', array('room' => $id));
         echo json_encode(array("state" => 1, "ret" => "success"));
     }
 }

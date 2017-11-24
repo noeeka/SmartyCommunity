@@ -52,6 +52,8 @@ class Setting extends CI_Controller
             $this->db->truncate('building');
             $this->db->truncate('unity');
             $this->db->truncate('room');
+            $this->db->truncate('indoor');
+            $this->db->truncate('outdoor');
 
 
 

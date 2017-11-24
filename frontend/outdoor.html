@@ -588,7 +588,8 @@
                     return false;
                 }
 
-                if(getByteLen($("#sip").val())>5 || $("#sip").val()==""){
+                var sips = ["1","2","3","4","5","6","7","8","9"];
+                if(getByteLen($("#sip").val())>5 || $("#sip").val()=="" || $.inArray($("#sip").val(), sips)<0){
                     $('.help-block').remove()
                     $('.has-error').parent().html($('.has-error').html());
                     $("#sip").wrapAll("<div class=\"form-group has-error\"></div>");
@@ -666,7 +667,8 @@
                     return false;
                 }
 
-                if(getByteLen($("#sip").val())>5 || $("#sip").val()==""){
+                var sips = ["1","2","3","4","5","6","7","8","9"];
+                if(getByteLen($("#sip").val())>5 || $("#sip").val()=="" || $.inArray($("#sip").val(), sips)<0){
                     $('.help-block').remove()
                     $('.has-error').parent().html($('.has-error').html());
                     $("#sip").wrapAll("<div class=\"form-group has-error\"></div>");
@@ -712,6 +714,8 @@
         });
 
         $(document).on("click", ".fa-edit", function () {
+            $("#showBuildings").attr("disabled","disabled");
+            $("#showUnits").attr("disabled","disabled");
             $('body').append('<div class="modal-backdrop fade in"></div>');
             $("#modal-default").addClass("in");
             $("#sip").val($(this).attr("data-sip"))
@@ -738,6 +742,8 @@
 
         });
         $("[data-dismiss|='modal']").click(function () {
+            $("#showBuildings").removeAttr("disabled");
+            $("#showUnits").removeAttr("disabled");
             $("#modal-default").removeClass("in");
             $("#modal-default").hide();
             $(".modal-backdrop").remove();

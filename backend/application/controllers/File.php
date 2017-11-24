@@ -19,14 +19,13 @@ class File extends CI_Controller
         set_time_limit(0);
         header("Content-type: text/html; charset=utf-8");
         //$path = $_SERVER['DOCUMENT_ROOT'] . '/ilife/backend/temp/';
-$path=dirname(dirname(dirname(__FILE__)))."/temp/";
+        $path = dirname(dirname(dirname(__FILE__))) . "/temp/";
         $this->load->library('UploadHandler');
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
         $upload_handler = new UploadHandler(array('print_response' => false));
 
         //reponse = $upload_handler->response;
-
 
 
         $open_dir = opendir($path);
@@ -39,13 +38,11 @@ $path=dirname(dirname(dirname(__FILE__)))."/temp/";
 
         $filePath = $path . $file_a;
 
-        if(!strstr($filePath,".xls")){
+        if (!strstr($filePath, ".xls")) {
 
             echo json_encode(array("state" => 0, "ret" => "file_format_error"));
             die;
         }
-
-
 
 
         //chmod($filePath, 0777);
@@ -121,14 +118,15 @@ $path=dirname(dirname(dirname(__FILE__)))."/temp/";
         }
     }
 
-    public function emptyDir(){
+    public function emptyDir()
+    {
         //$path = $_SERVER['DOCUMENT_ROOT'] . '/ilife/backend/temp/';
-$path=dirname(dirname(dirname(__FILE__)))."/temp/";
+        $path = dirname(dirname(dirname(__FILE__))) . "/temp/";
 
-        exec("rm -f ".$path."*",$out);
+        exec("rm -f " . $path . "*", $out);
 
-   
-            echo json_encode(array("state"=>1,"ret"=>"success"));
+
+        echo json_encode(array("state" => 1, "ret" => "success"));
 
     }
 
