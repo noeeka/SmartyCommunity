@@ -37,4 +37,30 @@ class Welcome extends CI_Controller {
             die;
         }
 	}
+
+	public function test(){
+
+
+$options = array(
+    'trace' => true,
+    'exceptions' => 0,
+    'login' => 'noeeka',
+    'password' => 'a8f19c202f9a40f0625e6ba81126fac5ea690e81',
+);
+$client = new SoapClient('https://flightxml.flightaware.com/soap/FlightXML3/wsdl', $options);
+
+// get the weather.
+$params = array("airport_code" => "TSN");
+$result = $client->AirportBoards($params);
+print_r($result);
+die;
+foreach ($result->AirportBoardsResults->conditions as $key => $condition) {
+    print_r($condition);
+    if (php_sapi_name() != 'cli') {
+        echo "<br/>";
+    }
+    echo "\n";
+}
+
+    }
 }

@@ -175,7 +175,6 @@ class Device extends CI_Controller
             $res[$k]['password']=$v->password;
         }
         echo json_encode(array("state" => 1, "ret" => $res,"total"=>$total));
-
     }
 
     //编辑室内机服务
